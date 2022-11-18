@@ -6,17 +6,33 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.1",
+    "@apollo/react-common": "^3.1.4",
+    "@apollo/react-hoc": "^4.0.0",
+    "@apollo/react-hooks": "^4.0.0",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.6",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
+    "apollo-boost": "^0.4.9",
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.4",
+    "graphql": "^14.7.0",
     "next": "13.0.4",
     "react": "18.2.0",
+    "react-apollo": "^3.1.5",
     "react-dom": "18.2.0",
+    "tslib": "^1.14.1",
     "typescript": "4.9.3"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "2.13.12",
+    "@graphql-codegen/client-preset": "1.1.4",
+    "@graphql-codegen/introspection": "2.2.1",
+    "@types/graphql": "^14.5.0"
   }
 }
