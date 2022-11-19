@@ -1,15 +1,19 @@
 "use client";
-import { ApolloProvider } from "@apollo/react-hooks";
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ApolloClient } from "apollo-client";
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  ApolloLink,
+  Observable,
+  HttpLink,
+} from "@apollo/client";
 import { getAccessToken, setAccessToken } from "./accessToken";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { HttpLink } from "apollo-link-http";
-import { onError } from "apollo-link-error";
-import { ApolloLink, Observable } from "apollo-link";
+import { onError } from "@apollo/client/link/error";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
-import jwtDecode from "jwt-decode";
+import jwtDecode, { JwtPayload } from "jwt-decode";
+import { useState, useEffect } from "react";
+import { useLogoutMutation } from "./generated/graphql";
 
 const cache = new InMemoryCache({});
 
@@ -55,8 +59,8 @@ const client = new ApolloClient({
         }
 
         try {
-          const { exp } = jwtDecode(token);
-          if (Date.now() >= exp * 1000) {
+          const { exp } = jwtDecode(token) as JwtPayload;
+          if (Date.now() >= (exp as number) * 1000) {
             return false;
           } else {
             return true;
@@ -71,10 +75,10 @@ const client = new ApolloClient({
           credentials: "include",
         });
       },
-      handleFetch: (accessToken: string) => {
+      handleFetch: (accessToken) => {
         setAccessToken(accessToken);
       },
-      handleError: (err: string) => {
+      handleError: (err) => {
         console.warn("Your refresh token is invalid. Try to relogin");
         console.error(err);
       },
@@ -91,6 +95,7 @@ const client = new ApolloClient({
   ]),
   cache,
 });
+
 export default function RootLayout({
   children,
 }: {
@@ -99,7 +104,7 @@ export default function RootLayout({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://localhost:3001/refresh_token", {
+    fetch("http://localhost:3001/refresh_token", {
       method: "POST",
       credentials: "include",
     }).then(async (x) => {
@@ -108,11 +113,6 @@ export default function RootLayout({
       setLoading(false);
     });
   }, []);
-
-  if (loading) {
-    return <div>loading...</div>;
-  }
-
   return (
     <html>
       <body>

@@ -18,7 +18,11 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import { useRouter } from "next/navigation";
-import { useLoginMutation } from "../generated/graphql";
+import {
+  GetUserDocument,
+  GetUserQuery,
+  useLoginMutation,
+} from "../generated/graphql";
 
 interface Props {
   setLogin: () => void;
@@ -30,7 +34,7 @@ export type Login = {
   password: string;
 };
 
-export const Login: React.FC<Props> = ({ setLogin, closeCartAndLogin }) => {
+export const Login: React.FC<Props> = ({}) => {
   const router = useRouter();
   const [login, isLoading] = useLoginMutation();
   const [showPassword, setShowPassword] = useState(false);
@@ -48,13 +52,22 @@ export const Login: React.FC<Props> = ({ setLogin, closeCartAndLogin }) => {
     event.preventDefault();
   };
 
-  const closeLogin = () => {
-    setLogin();
-  };
-
   const onSubmit = async (data: Login) => {
     const { email, password } = data;
-    const response = await login({ variables: { email, password } });
+    const response = await login({
+      variables: { email, password },
+      update: (store, { data }) => {
+        if (!data) {
+          return null;
+        }
+        store.writeQuery<GetUserQuery>({
+          query: GetUserDocument,
+          data: {
+            getUser: data.login.user,
+          },
+        });
+      },
+    });
 
     if (response && response.data) {
       setAccessToken(response.data.login.accessToken);
@@ -150,7 +163,6 @@ export const Login: React.FC<Props> = ({ setLogin, closeCartAndLogin }) => {
           color="primary"
           type="button"
           variant="contained"
-          onClick={closeLogin}
         >
           <Link href="/registration">Create an account</Link>
         </Button>
