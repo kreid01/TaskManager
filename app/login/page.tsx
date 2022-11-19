@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { setAccessToken } from "../accessToken";
+import { setAccessToken } from "../utils/accessToken";
 import Link from "next/link";
 import {
   Button,
@@ -36,7 +36,7 @@ export type Login = {
 
 export const Login: React.FC<Props> = ({}) => {
   const router = useRouter();
-  const [login, isLoading] = useLoginMutation();
+  const [login, loading] = useLoginMutation();
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit } = useForm<Login>({
     mode: "onChange",
@@ -75,8 +75,8 @@ export const Login: React.FC<Props> = ({}) => {
   };
 
   return (
-    <div className="w-[480px] bg-white  p-6 z-20 aboslute border-2 border-blue-900 rounded-md flex-col justify-center">
-      <header className="font-bold text-2xl my-3 text-blue-900 text-center abolute">
+    <div className="w-[480px] mx-auto p-6 rounded-md flex-col justify-center">
+      <header className="font-bold text-2xl my-3 text-orange-600 text-center">
         Login or create an account
       </header>
       <div className="border-b-[1px] border-gray-300 pb-10 mb-5">
@@ -138,11 +138,6 @@ export const Login: React.FC<Props> = ({}) => {
               color="primary"
               type="submit"
               variant="contained"
-              startIcon={
-                isLoading ? (
-                  <CircularProgress color="inherit" size={25} />
-                ) : null
-              }
             >
               Login
             </Button>
@@ -152,11 +147,11 @@ export const Login: React.FC<Props> = ({}) => {
       </div>
       <section className="text-gray-600 text-sm ml-2">
         <h3 className="font-semibold text-gray-600 text-base">New here</h3>
-        <p className="my-2">Registraion is free and easy!</p>
+        <p className="my-2">Register here to start hitting your goals</p>
         <ul className="list-disc ml-5 mb-4">
-          <li>Faster checkout</li>
-          <li>View and track orders and more</li>
-          <li>Create your wishlist</li>
+          <li>Track your projects</li>
+          <li>Meet deadlines</li>
+          <li>Stay organized</li>
         </ul>
         <Button
           style={{ width: "410px" }}
@@ -164,7 +159,7 @@ export const Login: React.FC<Props> = ({}) => {
           type="button"
           variant="contained"
         >
-          <Link href="/registration">Create an account</Link>
+          <Link href="/register">Create an account</Link>
         </Button>
       </section>
     </div>
