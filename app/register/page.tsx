@@ -22,7 +22,7 @@ import { useRegisterMutation } from "../generated/graphql";
 
 export default function RegistrationForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [registerUser, isLoading] = useRegisterMutation();
+  const [registerUser] = useRegisterMutation();
   const registerSchema = object({
     firstName: string()
       .min(1, "Name is required")
@@ -230,16 +230,7 @@ export default function RegistrationForm() {
             </FormControl>
           </DialogContent>
           <DialogActions>
-            <Button
-              color="primary"
-              type="submit"
-              variant="contained"
-              startIcon={
-                isLoading ? (
-                  <CircularProgress color="inherit" size={25} />
-                ) : null
-              }
-            >
+            <Button color="primary" type="submit" variant="contained">
               Register
             </Button>
           </DialogActions>
