@@ -9,6 +9,12 @@
                border-t-[1px] hover:text-orange-600 font-bold text-lg z-10 transition-all duration-700;
               ;
   }
+  .header {
+    @apply h-[61px]  text-white bg-gradient-to-r from-orange-600 to-amber-500 grid justify-center
+  }
+  .title {
+    @apply font-bold text-2xl my-auto
+  }
 }
 
 .sidebar-icon:hover:before {

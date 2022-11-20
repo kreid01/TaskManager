@@ -1,4 +1,5 @@
 "use client";
+import { Header } from "./components/Header";
 import { useUsersQuery } from "./generated/graphql";
 
 export default function HomePage() {
@@ -10,9 +11,7 @@ export default function HomePage() {
 
   return (
     <div>
-      <header className="h-[61px]  text-white bg-gradient-to-r from-orange-600 to-amber-500 grid justify-center">
-        <h1 className="font-bold text-2xl my-auto">Home</h1>
-      </header>
+      <Header title="Home" />
       <section>
         <h2 className="text-blue-800 mt-5 ml-5 font-bold text-2xl">
           Todays Tasks
