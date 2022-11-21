@@ -4,5 +4,6 @@ query searchUsers($search: String!) {
     firstName
     lastName
     username
+    email
   }
 }

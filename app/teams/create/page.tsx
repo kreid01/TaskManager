@@ -8,19 +8,29 @@ import {
   DialogActions,
   Button,
 } from "@material-ui/core";
-import { useForm } from "react-hook-form";
-import { useSearchUsersQuery } from "../../generated/graphql";
+import {
+  useCreateTeamMutation,
+  Users,
+  useSearchUsersQuery,
+} from "../../generated/graphql";
 import { useState } from "react";
 
 export default function CreateTeam() {
-  const { register, handleSubmit } = useForm({
-    mode: "onChange",
-  });
-
   type CreateTeam = {
     teamName: string;
     members: string;
   };
+
+  const [createTeam] = useCreateTeamMutation();
+
+  const initalState = {
+    teamName: "",
+    members: "",
+  };
+
+  const [newTeam, setNewTeam] = useState<CreateTeam>(initalState);
+  const [newMembers, setNewMembers] = useState<String[]>([]);
+
   const [search, setSearch] = useState<string>();
   const { data } = useSearchUsersQuery({
     variables: { search: search as string },
@@ -32,12 +42,30 @@ export default function CreateTeam() {
     setSearch(e.target.value);
   };
 
-  console.log(data);
+  const handleTeamChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setNewTeam((prevState) => ({
+      ...prevState,
+      teamName: e.target.value,
+    }));
+  };
+
+  const addUserToTeam = (user: Users) => {
+    setNewTeam((prevState) => ({
+      ...prevState,
+      members: prevState.members + `${user.id}, `,
+    }));
+    setNewMembers((prevState) => [
+      ...prevState,
+      user.firstName + " " + user.lastName,
+    ]);
+  };
 
   return (
     <div>
-      <Header title="Create Project" />
-      <form>
+      <Header title="Create Team" />
+      <form className="h-[87vh]">
         <DialogContent>
           <div className="grid">
             <FormControl
@@ -48,15 +76,25 @@ export default function CreateTeam() {
                 Team Name
               </InputLabel>
               <OutlinedInput
-                {...register("teamName")}
                 style={{ width: "380px", height: "55px" }}
                 id="teamName"
+                onChange={(e) => handleTeamChange(e)}
                 label="Team Name"
                 margin="dense"
+                value={newTeam.teamName}
                 name="teamName"
                 type="text"
               />
             </FormControl>
+            <div>
+              Current members:
+              <div>
+                {" "}
+                {newMembers.map((member) => {
+                  return <div>{member}</div>;
+                })}
+              </div>
+            </div>
             <FormControl
               style={{ margin: "20px 0", width: "25ch" }}
               variant="outlined"
@@ -74,14 +112,41 @@ export default function CreateTeam() {
                 type="text"
               />
             </FormControl>
+            {data &&
+              data.searchUsers.map((user) => {
+                return (
+                  <div className="border-b-[1px] border-gray-300 w-[380px] justify-between flex">
+                    <p>
+                      {user.firstName} {user.lastName}
+                    </p>
+                    <button type="button" onClick={() => addUserToTeam(user)}>
+                      +
+                    </button>
+                  </div>
+                );
+              })}
           </div>
         </DialogContent>
         <DialogActions>
           <Button
-            style={{ width: "410px" }}
+            style={{
+              width: "380px",
+              margin: "50px 0",
+              marginRight: "auto",
+              marginLeft: "20px",
+            }}
             color="primary"
-            type="button"
+            type="submit"
             variant="contained"
+            onClick={() =>
+              createTeam({
+                variables: {
+                  teamName: newTeam.teamName,
+                  teamLead: 6,
+                  members: newTeam.members,
+                },
+              })
+            }
           >
             Create
           </Button>
