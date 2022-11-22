@@ -7,19 +7,19 @@
 @layer components {
   .sidebar-icon {
     @apply relative flex 
-                py-4 w-[100%] pl-2
-               border-t-[1px] hover:text-orange-600 font-bold text-lg z-10 transition-all duration-700;
+                py-4 w-[100%] pl-2 bg-gradient-to-r from-orange-600 to-amber-500 text-white
+                hover:text-orange-600 font-bold text-lg z-10 transition-all duration-700 border-b-[1px];
               ;
   }
   .header {
-    @apply h-[61px]  text-white bg-gradient-to-r from-orange-600 to-amber-500 grid justify-center
+    @apply h-[61px] -ml-2  text-white bg-gradient-to-r from-blue-500 to-blue-600 grid justify-center
   }
   .title {
     @apply font-bold text-2xl my-auto
   }
 
   .sidebar-icon:before {
-    background: linear-gradient(to right, transparent, rgb(255 237 213), rgb(249 115 22));
+    background: linear-gradient(to right, white, rgb(255 237 213), transparent);
     content: "";
     left: 0px;
     z-index: 0;

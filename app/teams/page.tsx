@@ -18,7 +18,7 @@ export default function teamsPage() {
         {teams?.getUsersTeams.map((team) => {
           return (
             <div>
-              <Team team={team} />
+              <Team team={team} key={team.id} />
             </div>
           );
         })}
