@@ -1,0 +1,11 @@
+mutation createProject(
+  $teams: String!
+  $projectName: String!
+  $projectLead: Float!
+) {
+  createProject(
+    teams: $teams
+    projectName: $projectName
+    projectLead: $projectLead
+  )
+}

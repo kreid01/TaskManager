@@ -1,0 +1,9 @@
+query searchTeams($search: String!) {
+  searchTeams(search: $search) {
+    id
+    teamName
+    teamLead
+    members
+    created
+  }
+}
