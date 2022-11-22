@@ -24,6 +24,7 @@ export type Query = {
   getTeam: Teams;
   getTeamMembers: Array<Users>;
   getUser?: Maybe<Users>;
+  getUsersProjects: Array<Projects>;
   getUsersTeams: Array<Teams>;
   searchTeams: Array<Teams>;
   searchUsers: Array<Users>;
@@ -49,6 +50,11 @@ export type QueryGetTeamArgs = {
 
 export type QueryGetTeamMembersArgs = {
   team: Scalars['String'];
+};
+
+
+export type QueryGetUsersProjectsArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -184,12 +190,26 @@ export type CreateProjectMutationVariables = Exact<{
 
 export type CreateProjectMutation = { __typename?: 'Mutation', createProject: boolean };
 
+export type DeleteProjectMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type DeleteProjectMutation = { __typename?: 'Mutation', deleteProject: boolean };
+
 export type GetProjectQueryVariables = Exact<{
   getProjectId: Scalars['Float'];
 }>;
 
 
 export type GetProjectQuery = { __typename?: 'Query', getProject: { __typename?: 'Projects', projectLead: number, teams: string } };
+
+export type GetUsersProjectsQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type GetUsersProjectsQuery = { __typename?: 'Query', getUsersProjects: Array<{ __typename?: 'Projects', id: number, projectName: string, projectLead: number, created: string, teams: string }> };
 
 export type CreateTeamMutationVariables = Exact<{
   members: Scalars['String'];
@@ -323,6 +343,37 @@ export function useCreateProjectMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProjectMutation>;
 export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
 export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<CreateProjectMutation, CreateProjectMutationVariables>;
+export const DeleteProjectDocument = gql`
+    mutation deleteProject($id: Float!) {
+  deleteProject(id: $id)
+}
+    `;
+export type DeleteProjectMutationFn = Apollo.MutationFunction<DeleteProjectMutation, DeleteProjectMutationVariables>;
+
+/**
+ * __useDeleteProjectMutation__
+ *
+ * To run a mutation, you first call `useDeleteProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteProjectMutation, { data, loading, error }] = useDeleteProjectMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteProjectMutation(baseOptions?: Apollo.MutationHookOptions<DeleteProjectMutation, DeleteProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteProjectMutation, DeleteProjectMutationVariables>(DeleteProjectDocument, options);
+      }
+export type DeleteProjectMutationHookResult = ReturnType<typeof useDeleteProjectMutation>;
+export type DeleteProjectMutationResult = Apollo.MutationResult<DeleteProjectMutation>;
+export type DeleteProjectMutationOptions = Apollo.BaseMutationOptions<DeleteProjectMutation, DeleteProjectMutationVariables>;
 export const GetProjectDocument = gql`
     query getProject($getProjectId: Float!) {
   getProject(id: $getProjectId) {
@@ -360,6 +411,45 @@ export function useGetProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetProjectQueryHookResult = ReturnType<typeof useGetProjectQuery>;
 export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQuery>;
 export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;
+export const GetUsersProjectsDocument = gql`
+    query getUsersProjects($id: Float!) {
+  getUsersProjects(id: $id) {
+    id
+    projectName
+    projectLead
+    created
+    teams
+  }
+}
+    `;
+
+/**
+ * __useGetUsersProjectsQuery__
+ *
+ * To run a query within a React component, call `useGetUsersProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersProjectsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUsersProjectsQuery(baseOptions: Apollo.QueryHookOptions<GetUsersProjectsQuery, GetUsersProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersProjectsQuery, GetUsersProjectsQueryVariables>(GetUsersProjectsDocument, options);
+      }
+export function useGetUsersProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersProjectsQuery, GetUsersProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersProjectsQuery, GetUsersProjectsQueryVariables>(GetUsersProjectsDocument, options);
+        }
+export type GetUsersProjectsQueryHookResult = ReturnType<typeof useGetUsersProjectsQuery>;
+export type GetUsersProjectsLazyQueryHookResult = ReturnType<typeof useGetUsersProjectsLazyQuery>;
+export type GetUsersProjectsQueryResult = Apollo.QueryResult<GetUsersProjectsQuery, GetUsersProjectsQueryVariables>;
 export const CreateTeamDocument = gql`
     mutation createTeam($members: String!, $teamName: String!, $teamLead: Float!) {
   createTeam(members: $members, teamName: $teamName, teamLead: $teamLead)

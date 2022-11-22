@@ -5,7 +5,6 @@ interface Props {
 }
 
 export const UserName: React.FC<Props> = ({ id }) => {
-  console.log(id);
   const { data } = useGetTeamMembersQuery({
     variables: { team: id.toString() as string },
   });

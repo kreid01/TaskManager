@@ -1,0 +1,9 @@
+query getUsersProjects($id: Float!) {
+  getUsersProjects(id: $id) {
+    id
+    projectName
+    projectLead
+    created
+    teams
+  }
+}

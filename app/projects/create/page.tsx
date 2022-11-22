@@ -64,28 +64,28 @@ export default function CreateProject() {
 
   return (
     <div>
-      <Header title="Create Team" />
-      <form className="h-[80.3vh]">
+      <Header title="Create Project" />
+      <form>
         <DialogContent>
           <div className="grid">
             <FormControl
               style={{ margin: "20px 0", width: "50ch" }}
               variant="outlined"
             >
-              <InputLabel htmlFor="teamName">Team Name</InputLabel>
+              <InputLabel htmlFor="teamName">Project Name</InputLabel>
               <OutlinedInput
                 style={{ width: "380px", height: "55px" }}
-                id="teamName"
+                id="projectName"
                 onChange={(e) => handleTeamChange(e)}
-                label="Team Name"
+                label="Project Name"
                 margin="dense"
                 value={newProject.projectName}
-                name="teamName"
+                name="projectNName"
                 type="text"
               />
             </FormControl>
             <div>
-              Current members:
+              Current Teams:
               <div>
                 {" "}
                 {newTeams.map((teams) => {
@@ -98,7 +98,7 @@ export default function CreateProject() {
               variant="outlined"
             >
               <InputLabel htmlFor="outlined-adornment-password">
-                Add Members
+                Add Teams
               </InputLabel>
               <OutlinedInput
                 style={{ width: "380px", height: "55px" }}
