@@ -18,12 +18,18 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   bye: Scalars['String'];
+  getTeam: Teams;
   getTeamMembers: Array<Users>;
   getUser?: Maybe<Users>;
   getUsersTeams: Array<Teams>;
   searchUsers: Array<Users>;
   teams: Array<Teams>;
-  users: Array<Teams>;
+  users: Array<Users>;
+};
+
+
+export type QueryGetTeamArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -41,15 +47,6 @@ export type QuerySearchUsersArgs = {
   search: Scalars['String'];
 };
 
-export type Users = {
-  __typename?: 'Users';
-  email: Scalars['String'];
-  firstName: Scalars['String'];
-  id: Scalars['Int'];
-  lastName: Scalars['String'];
-  username: Scalars['String'];
-};
-
 export type Teams = {
   __typename?: 'Teams';
   created: Scalars['String'];
@@ -57,6 +54,15 @@ export type Teams = {
   members: Scalars['String'];
   teamLead: Scalars['Int'];
   teamName: Scalars['String'];
+};
+
+export type Users = {
+  __typename?: 'Users';
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  id: Scalars['Int'];
+  lastName: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type Mutation = {
@@ -136,10 +142,12 @@ export type DeleteTeamMutationVariables = Exact<{
 
 export type DeleteTeamMutation = { __typename?: 'Mutation', deleteTeam: boolean };
 
-export type GetTeamQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetTeamQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
 
 
-export type GetTeamQuery = { __typename?: 'Query', teams: Array<{ __typename?: 'Teams', id: number, members: string, teamLead: number, teamName: string }> };
+export type GetTeamQuery = { __typename?: 'Query', getTeam: { __typename?: 'Teams', teamName: string, teamLead: number, members: string } };
 
 export type GetTeamMembersQueryVariables = Exact<{
   team: Scalars['String'];
@@ -147,6 +155,11 @@ export type GetTeamMembersQueryVariables = Exact<{
 
 
 export type GetTeamMembersQuery = { __typename?: 'Query', getTeamMembers: Array<{ __typename?: 'Users', firstName: string, lastName: string, email: string, id: number }> };
+
+export type GetTeamsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTeamsQuery = { __typename?: 'Query', teams: Array<{ __typename?: 'Teams', id: number, members: string, teamLead: number, teamName: string }> };
 
 export type GetUsersTeamsQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -202,7 +215,7 @@ export type SearchUsersQuery = { __typename?: 'Query', searchUsers: Array<{ __ty
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'Teams', id: number }> };
+export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'Users', id: number }> };
 
 
 export const CreateTeamDocument = gql`
@@ -270,12 +283,11 @@ export type DeleteTeamMutationHookResult = ReturnType<typeof useDeleteTeamMutati
 export type DeleteTeamMutationResult = Apollo.MutationResult<DeleteTeamMutation>;
 export type DeleteTeamMutationOptions = Apollo.BaseMutationOptions<DeleteTeamMutation, DeleteTeamMutationVariables>;
 export const GetTeamDocument = gql`
-    query getTeam {
-  teams {
-    id
-    members
-    teamLead
+    query getTeam($id: Float!) {
+  getTeam(id: $id) {
     teamName
+    teamLead
+    members
   }
 }
     `;
@@ -292,10 +304,11 @@ export const GetTeamDocument = gql`
  * @example
  * const { data, loading, error } = useGetTeamQuery({
  *   variables: {
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetTeamQuery(baseOptions?: Apollo.QueryHookOptions<GetTeamQuery, GetTeamQueryVariables>) {
+export function useGetTeamQuery(baseOptions: Apollo.QueryHookOptions<GetTeamQuery, GetTeamQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
       }
@@ -344,6 +357,43 @@ export function useGetTeamMembersLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetTeamMembersQueryHookResult = ReturnType<typeof useGetTeamMembersQuery>;
 export type GetTeamMembersLazyQueryHookResult = ReturnType<typeof useGetTeamMembersLazyQuery>;
 export type GetTeamMembersQueryResult = Apollo.QueryResult<GetTeamMembersQuery, GetTeamMembersQueryVariables>;
+export const GetTeamsDocument = gql`
+    query getTeams {
+  teams {
+    id
+    members
+    teamLead
+    teamName
+  }
+}
+    `;
+
+/**
+ * __useGetTeamsQuery__
+ *
+ * To run a query within a React component, call `useGetTeamsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTeamsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTeamsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTeamsQuery(baseOptions?: Apollo.QueryHookOptions<GetTeamsQuery, GetTeamsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamsQuery, GetTeamsQueryVariables>(GetTeamsDocument, options);
+      }
+export function useGetTeamsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamsQuery, GetTeamsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamsQuery, GetTeamsQueryVariables>(GetTeamsDocument, options);
+        }
+export type GetTeamsQueryHookResult = ReturnType<typeof useGetTeamsQuery>;
+export type GetTeamsLazyQueryHookResult = ReturnType<typeof useGetTeamsLazyQuery>;
+export type GetTeamsQueryResult = Apollo.QueryResult<GetTeamsQuery, GetTeamsQueryVariables>;
 export const GetUsersTeamsDocument = gql`
     query getUsersTeams($id: Float!) {
   getUsersTeams(id: $id) {

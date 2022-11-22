@@ -2,14 +2,17 @@
 import { Button } from "@material-ui/core";
 import Link from "next/link";
 import { Header } from "../components/Header";
-import { useGetUserQuery, useGetUsersTeamsQuery } from "../generated/graphql";
+import { useGetUsersTeamsQuery } from "../generated/graphql";
 import { Team } from "../components/Team";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 export default function teamsPage() {
-  const { data: user } = useGetUserQuery();
+  const currentUser = useSelector((state: RootState) => state.user.value);
 
+  console.log(currentUser?.id);
   const { data: teams } = useGetUsersTeamsQuery({
-    variables: { id: user?.getUser?.id as number },
+    variables: { id: currentUser?.id as number },
   });
   return (
     <div>
@@ -23,8 +26,15 @@ export default function teamsPage() {
           );
         })}
       </div>
-      <section className="w-full h-[87vh]">
-        <div className="ml-auto">
+      <section className="w-full h-[78vh]">
+        <div>
+          {!teams?.getUsersTeams && (
+            <div className="font-semibold ml-5 text-lg mb-10">
+              You are not a part of any teams, try creating one now.
+            </div>
+          )}
+        </div>
+        <div className="ml-5">
           <Link href="/teams/create">
             <Button color="primary" type="button" variant="contained">
               Create Team

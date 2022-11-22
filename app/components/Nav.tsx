@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useLogoutMutation, useGetUserQuery } from "../generated/graphql";
 import { RootState } from "../store/store";
-import { setUser } from "../slices/userSlice";
+import { initialState, setUser, User } from "../slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,12 +14,18 @@ import {
   faUserAlt,
   faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
+import { useEffect } from "react";
 
 export const Nav = () => {
   const [logout, { client }] = useLogoutMutation();
+
   const { data: user } = useGetUserQuery({ fetchPolicy: "network-only" });
-  const currentUser = useSelector((state: RootState) => state.user);
+  const currentUser = useSelector((state: RootState) => state.user.value);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setUser(user?.getUser as User));
+  }, [user?.getUser]);
 
   return (
     <nav
@@ -65,12 +71,12 @@ export const Nav = () => {
             Profile
           </Link>
         </div>
-        {user?.getUser ? (
+        {currentUser != undefined ? (
           <button
             className="sidebar-icon"
             onClick={async () => {
               logout();
-              dispatch(setUser(" "));
+              dispatch(setUser(initialState.value));
               await client!.resetStore();
             }}
           >

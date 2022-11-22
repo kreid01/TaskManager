@@ -14,6 +14,8 @@ import {
   useSearchUsersQuery,
 } from "../../generated/graphql";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 export default function CreateTeam() {
   type CreateTeam = {
@@ -21,6 +23,7 @@ export default function CreateTeam() {
     members: string;
   };
 
+  const currentUser = useSelector((state: RootState) => state.user.value);
   const [createTeam] = useCreateTeamMutation();
 
   const initalState = {
@@ -36,6 +39,7 @@ export default function CreateTeam() {
     variables: { search: search as string },
   });
 
+  console.log(currentUser?.id);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -61,6 +65,8 @@ export default function CreateTeam() {
       user.firstName + " " + user.lastName,
     ]);
   };
+
+  console.log(newTeam);
 
   return (
     <div>
@@ -142,7 +148,7 @@ export default function CreateTeam() {
               createTeam({
                 variables: {
                   teamName: newTeam.teamName,
-                  teamLead: 6,
+                  teamLead: currentUser.id as number,
                   members: newTeam.members,
                 },
               })
