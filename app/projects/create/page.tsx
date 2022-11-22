@@ -9,36 +9,35 @@ import {
   Button,
 } from "@material-ui/core";
 import {
-  useCreateTeamMutation,
-  Users,
-  useSearchUsersQuery,
+  Teams,
+  useCreateProjectMutation,
+  useSearchTeamsQuery,
 } from "../../generated/graphql";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 
-export default function CreateTeam() {
-  type CreateTeam = {
-    teamName: string;
-    members: string;
+export default function CreateProject() {
+  type CreateProject = {
+    projectName: string;
+    teams: string;
   };
 
   const currentUser = useSelector((state: RootState) => state.user.value);
-  const [createTeam] = useCreateTeamMutation();
+  const [createProject] = useCreateProjectMutation();
 
   const initalState = {
-    teamName: "",
-    members: "",
+    projectName: "",
+    teams: "",
   };
 
-  const [newTeam, setNewTeam] = useState<CreateTeam>(initalState);
-  const [newMembers, setNewMembers] = useState<String[]>([]);
+  const [newProject, setNewProject] = useState<CreateProject>(initalState);
+  const [newTeams, setNewTeams] = useState<String[]>([]);
 
   const [search, setSearch] = useState<string>();
-  const { data } = useSearchUsersQuery({
+  const { data } = useSearchTeamsQuery({
     variables: { search: search as string },
   });
-
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -49,21 +48,18 @@ export default function CreateTeam() {
   const handleTeamChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setNewTeam((prevState) => ({
+    setNewProject((prevState) => ({
       ...prevState,
-      teamName: e.target.value,
+      projectName: e.target.value,
     }));
   };
 
-  const addUserToTeam = (user: Users) => {
-    setNewTeam((prevState) => ({
+  const addTeamToProject = (team: Teams) => {
+    setNewProject((prevState) => ({
       ...prevState,
-      members: prevState.members + `${user.id}, `,
+      teams: prevState.teams + `${team.id}, `,
     }));
-    setNewMembers((prevState) => [
-      ...prevState,
-      user.firstName + " " + user.lastName,
-    ]);
+    setNewTeams((prevState) => [...prevState, team.teamName]);
   };
 
   return (
@@ -83,18 +79,17 @@ export default function CreateTeam() {
                 onChange={(e) => handleTeamChange(e)}
                 label="Team Name"
                 margin="dense"
-                value={newTeam.teamName}
+                value={newProject.projectName}
                 name="teamName"
                 type="text"
               />
             </FormControl>
-
             <div>
               Current members:
               <div>
                 {" "}
-                {newMembers.map((member) => {
-                  return <div>{member}</div>;
+                {newTeams.map((teams) => {
+                  return <div>{teams}</div>;
                 })}
               </div>
             </div>
@@ -116,13 +111,14 @@ export default function CreateTeam() {
               />
             </FormControl>
             {data &&
-              data.searchUsers.map((user) => {
+              data.searchTeams.map((team) => {
                 return (
                   <div className="border-b-[1px] border-gray-300 w-[380px] justify-between flex">
-                    <p>
-                      {user.firstName} {user.lastName}
-                    </p>
-                    <button type="button" onClick={() => addUserToTeam(user)}>
+                    <p>{team.teamName}</p>
+                    <button
+                      type="button"
+                      onClick={() => addTeamToProject(team)}
+                    >
                       +
                     </button>
                   </div>
@@ -142,11 +138,11 @@ export default function CreateTeam() {
             type="submit"
             variant="contained"
             onClick={() =>
-              createTeam({
+              createProject({
                 variables: {
-                  teamName: newTeam.teamName,
-                  teamLead: currentUser.id as number,
-                  members: newTeam.members,
+                  projectName: newProject.projectName,
+                  projectLead: currentUser.id as number,
+                  teams: newProject.teams,
                 },
               })
             }

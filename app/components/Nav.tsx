@@ -43,7 +43,7 @@ export const Nav = () => {
         </Link>
       </div>
       <div className="sidebar-icon">
-        <Link className="z-10" href="/search">
+        <Link className="z-10" href="/projects">
           <FontAwesomeIcon icon={faProjectDiagram} className="h-6 mx-1" />{" "}
           Projects
         </Link>

@@ -1,4 +1,4 @@
-import { useGetTeamMembersQuery } from "../../generated/graphql";
+import { useGetTeamMembersQuery } from "../generated/graphql";
 
 interface Props {
   id: number;
@@ -10,5 +10,9 @@ export const UserName: React.FC<Props> = ({ id }) => {
     variables: { team: id.toString() as string },
   });
 
-  return <div>{data?.getTeamMembers[0].firstName}</div>;
+  return (
+    <div>
+      {data?.getTeamMembers[0].firstName} {data?.getTeamMembers[0].lastName}
+    </div>
+  );
 };
