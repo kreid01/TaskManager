@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { literal, object, string, TypeOf } from "zod";
+import { object, string, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -19,6 +19,8 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import { useRegisterMutation } from "../generated/graphql";
+import { Header } from "../components/Header";
+import { useRouter } from "next/navigation";
 
 export default function RegistrationForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -51,6 +53,7 @@ export default function RegistrationForm() {
     mode: "onChange",
   });
 
+  const router = useRouter();
   const onSubmit = async (data: RegisterInput) => {
     const { email, password, firstName, lastName, username } = data;
     const response = await registerUser({
@@ -62,7 +65,9 @@ export default function RegistrationForm() {
         username,
       },
     });
-    console.log(response);
+    if (response) {
+      router.push("/");
+    }
   };
 
   const handleClickShowPassword = () => {
@@ -76,10 +81,8 @@ export default function RegistrationForm() {
 
   return (
     <>
-      <h1 className="font-bold md:ml-[82px] h-[100vw] ml-10 my-5 text-2xl text-blue-900">
-        Create an account
-      </h1>
-      <div className="md:ml-[60px] ml-5 w-[410px]">
+      <Header title="Creat An Account" />
+      <div className="md:ml-[60px] ml-5 w-[410px] h-[87vh]">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
             <FormControl

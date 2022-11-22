@@ -1,96 +1,88 @@
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { setAccessToken } from "../utils/accessToken";
 import { useLogoutMutation, useGetUserQuery } from "../generated/graphql";
+import { RootState } from "../store/store";
+import { setUser } from "../slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHome,
+  faCalendar,
+  faProjectDiagram,
+  faPeopleGroup,
+  faBell,
+  faSearch,
+  faUserAlt,
+  faArrowRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const Nav = () => {
-  const [loading, setLoading] = useState(true);
   const [logout, { client }] = useLogoutMutation();
   const { data: user } = useGetUserQuery({ fetchPolicy: "network-only" });
-
-  useEffect(() => {
-    fetch("http://localhost:3001/refresh_token", {
-      method: "POST",
-      credentials: "include",
-    }).then(async (x) => {
-      const { accessToken } = await x.json();
-      setAccessToken(accessToken);
-      setLoading(false);
-    });
-  }, []);
-
-  for (const link of document.getElementsByClassName(
-    "sidebar-icon"
-  ) as HTMLCollectionOf<HTMLElement>) {
-    link.onmousemove = (e: any) => {
-      const decimal = e.clientX / link.offsetWidth;
-
-      const basePercent = 80,
-        percentRange = 20,
-        ajustablePercent = percentRange * decimal;
-
-      const lightOrangePercent = basePercent + ajustablePercent;
-
-      link.style.setProperty(
-        "--light-orange-percent",
-        `${lightOrangePercent}%`
-      );
-    };
-  }
+  const currentUser = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
 
   return (
     <nav
-      className="fixed min-h-screen md:w-3/12 lg:w-4/12
-   flex flex-col bg-white shadow-lg"
+      className="fixed min-h-screen w-3/12 bg-gradient-to-r from-orange-600 to-amber-500
+   flex flex-col  shadow-lg"
     >
       <div className="sidebar-icon">
         <Link className="z-10" href="/">
-          Home
+          <FontAwesomeIcon icon={faHome} className="h-6 mx-1" /> Home
         </Link>
       </div>
       <div className="sidebar-icon">
         <Link className="z-10" href="/calender">
-          Calender
+          <FontAwesomeIcon icon={faCalendar} className="h-6 mx-1" /> Calender
         </Link>
       </div>
       <div className="sidebar-icon">
         <Link className="z-10" href="/search">
+          <FontAwesomeIcon icon={faProjectDiagram} className="h-6 mx-1" />{" "}
           Projects
         </Link>
       </div>
       <div className="sidebar-icon">
         <Link className="z-10" href="/teams">
-          Teams
+          <FontAwesomeIcon icon={faPeopleGroup} className="h-6 mx-1" /> Teams
         </Link>
       </div>
       <div className="sidebar-icon">
         <Link className="z-10" href="/notifcations">
-          Notifications
+          <FontAwesomeIcon icon={faBell} className="h-6 mx-1" /> Notifications
         </Link>
       </div>
       <div className="sidebar-icon">
         <Link className="z-10" href="/search">
+          <FontAwesomeIcon icon={faSearch} className="h-6 mx-1 mr-2" />
           Search
         </Link>
       </div>
       <div className="mt-auto">
-        <div className="sidebar-icon">
-          <Link href="/profile">Profile</Link>
+        <div className="sidebar-icon border-t-[1px]">
+          <Link className="z-10" href="/profile">
+            <FontAwesomeIcon icon={faUserAlt} className="h-6 mx-1 mr-2 " />
+            Profile
+          </Link>
         </div>
-        {!loading && user?.getUser ? (
+        {user?.getUser ? (
           <button
             className="sidebar-icon"
             onClick={async () => {
               logout();
-              setAccessToken("");
+              dispatch(setUser(" "));
               await client!.resetStore();
             }}
           >
-            Logout
+            <FontAwesomeIcon
+              icon={faArrowRightFromBracket}
+              className="h-6 mx-1 mr-2 z-10"
+            />
+            <p className="z-10">Logout</p>
           </button>
         ) : (
           <>
-            <div className="sidebar-icon">
+            <div className="sidebar-icon border-t-[1px]">
               <Link className="z-10" href="register">
                 Register
               </Link>
