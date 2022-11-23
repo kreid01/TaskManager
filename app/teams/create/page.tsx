@@ -88,7 +88,6 @@ export default function CreateTeam() {
                 type="text"
               />
             </FormControl>
-
             <div>
               Current members:
               <div>

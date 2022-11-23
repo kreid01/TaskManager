@@ -1,14 +1,25 @@
 "use client";
 import { Header } from "./components/Header";
-import { useUsersQuery } from "./generated/graphql";
 import { Team } from "./components/Team";
+import {
+  useGetUsersTeamsQuery,
+  useGetUsersProjectsQuery,
+} from "./generated/graphql";
+
+import { useSelector } from "react-redux";
+import { RootState } from "./store/store";
+import { Project } from "./components/Project";
 
 export default function HomePage() {
-  const { data } = useUsersQuery({ fetchPolicy: "network-only" });
+  const currentUser = useSelector((state: RootState) => state.user.value);
 
-  if (!data) {
-    return <div>Loading...</div>;
-  }
+  const { data: teams } = useGetUsersTeamsQuery({
+    variables: { id: currentUser?.id as number },
+  });
+
+  const { data: projects } = useGetUsersProjectsQuery({
+    variables: { id: currentUser?.id as number },
+  });
 
   return (
     <div>
@@ -37,14 +48,10 @@ export default function HomePage() {
           Current Projects
         </h2>
         <div className="grid grid-cols-2">
-          <div className=" border-[1px] border-orange-500 rounded-md p-2 mx-5 shadow-lg">
-            <h3 className="text-lg font-bold">Project Name:</h3>
-            <h2>Team</h2>
-          </div>
-          <div className=" border-[1px] border-orange-500 rounded-md p-2 mx-5">
-            <h3 className="text-lg font-bold">Task Name:</h3>
-            <h2>Team</h2>
-          </div>
+          {projects?.getUsersProjects &&
+            projects.getUsersProjects.map((project) => {
+              return <Project key={project.id} project={project} />;
+            })}
         </div>
       </section>
       <section>
@@ -52,8 +59,10 @@ export default function HomePage() {
           Recent Teams
         </h2>
         <div className="grid grid-cols-2">
-          <Team />
-          <Team />
+          {teams?.getUsersTeams &&
+            teams?.getUsersTeams.map((team) => {
+              return <Team key={team.id} team={team} />;
+            })}
         </div>
       </section>
       <section>

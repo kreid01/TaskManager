@@ -141,7 +141,7 @@ export default function RootLayout({
               <body>
                 <main>
                   <Nav />
-                  <div className="ml-60">
+                  <div className="ml-[25%] lg:ml-[16.7%] h-[100vh]">
                     {children} <Footer />
                   </div>
                 </main>
@@ -158,7 +158,7 @@ export default function RootLayout({
           <Provider store={store}>
             <body>
               <main>
-                <div className="ml-60">
+                <div className="w-[100vw] ml-[45%]">
                   <LoadingSVG />
                 </div>
               </main>

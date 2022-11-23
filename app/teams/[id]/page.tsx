@@ -2,21 +2,23 @@
 import { Header } from "../../components/Header";
 import { LoadingSVG } from "../../components/LoadingSVG";
 import {
-  useGetTeamMembersQuery,
+  useGetTeamProjectQuery,
   useGetTeamQuery,
 } from "../../generated/graphql";
 import { UserName } from "../../components/UserName";
 import Link from "next/link";
 import { Button } from "@material-ui/core";
+import { TeamMembers } from "../../components/TeamMembers";
 
 export default function TeamPage({ params }: any) {
   const { data: team } = useGetTeamQuery({
     variables: { id: parseInt(params.id) as number },
   });
 
-  const { data: teamMembers } = useGetTeamMembersQuery({
-    variables: { team: team?.getTeam.members.trim() as string },
+  const { data } = useGetTeamProjectQuery({
+    variables: { id: parseInt(params.id) as number },
   });
+
   return team?.getTeam ? (
     <div>
       <Header title={team?.getTeam.teamName as string}></Header>
@@ -30,19 +32,26 @@ export default function TeamPage({ params }: any) {
         </section>
         <section className="mt-10 ml-5 text-lg mx-auto">
           <h2 className="text-blue-800 font-bold text-2xl">Members</h2>
-          <div className=" border-[1px] border-orange-500 rounded-md mr-5 p-2 mt-3 shadow-lg">
-            {teamMembers?.getTeamMembers.map((member) => (
-              <div key={member.id} className="">
-                {member.firstName} {member.lastName}
-              </div>
-            ))}
-          </div>
+          <TeamMembers members={team?.getTeam.members} />
         </section>
 
         <section className="mt-10 ml-5 text-lg mx-auto">
           <h2 className="text-blue-800 font-bold text-2xl">Current Projects</h2>
 
-          <div className=" border-[1px] border-orange-500 rounded-md mr-5 p-2 mt-3 shadow-lg"></div>
+          <div className=" border-[1px] border-orange-500 rounded-md mr-5 p-2 mt-3 shadow-lg">
+            {data &&
+              data.getTeamProjects.map((project) => {
+                return (
+                  <div>
+                    <Link href={`/projects/${project.id}`}>
+                      <span className="font-bold text-orange-500">
+                        {project.projectName}
+                      </span>
+                    </Link>
+                  </div>
+                );
+              })}
+          </div>
           <Link href="/projects/create">
             <Button
               color="primary"

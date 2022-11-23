@@ -1,0 +1,9 @@
+query getProjectTeams($teams: String!) {
+  getProjectTeams(teams: $teams) {
+    teamLead
+    teamName
+    id
+    members
+    created
+  }
+}

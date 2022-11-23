@@ -1,6 +1,6 @@
-query getProject($getProjectId: Float!) {
-  getProject(id: $getProjectId) {
-    projectLead
+query getProject($id: Float!) {
+  getProject(id: $id) {
+    projectName
     projectLead
     teams
   }

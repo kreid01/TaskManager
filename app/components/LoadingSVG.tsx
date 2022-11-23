@@ -1,7 +1,7 @@
 export const LoadingSVG = () => {
   return (
     <div className="w-[100vw]">
-      <div className="svg ml-32">
+      <div className="svg">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           xmlnsXlink="http://www.w3.org/1999/xlink"
