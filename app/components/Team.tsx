@@ -8,16 +8,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import Link from "next/link";
 import { UserName } from "./UserName";
+import { TeamMembers } from "./TeamMembers";
 
 interface Props {
   team?: Teams;
 }
 
 export const Team: React.FC<Props> = ({ team }) => {
-  const { data: teamMembers } = useGetTeamMembersQuery({
-    variables: { team: team?.members.trim() as string },
-  });
-
   const [deleteTeam] = useDeleteTeamMutation();
 
   return (
@@ -38,16 +35,10 @@ export const Team: React.FC<Props> = ({ team }) => {
           <h4 className="mr-2">Team Lead:</h4>{" "}
           {team && <UserName id={team?.teamLead as number} />}{" "}
         </div>
-        <h2>
+        <section>
           Members:
-          <div className="flex">
-            {teamMembers?.getTeamMembers.map((member) => (
-              <div key={member.id} className="mr-1">
-                - {member.firstName}
-              </div>
-            ))}
-          </div>
-        </h2>
+          <TeamMembers members={team?.members as string} />
+        </section>
         <p className="text-gray-400 text-sm">Most recent task</p>
       </Link>
     </div>

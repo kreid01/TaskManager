@@ -13,6 +13,7 @@ export default function ProjectsPage() {
   const { data: teams } = useGetUsersProjectsQuery({
     variables: { id: currentUser?.id as number },
   });
+
   return (
     <div>
       <Header title="Your Projects" />
@@ -25,7 +26,7 @@ export default function ProjectsPage() {
           );
         })}
       </div>
-      <section className="w-full">
+      <section>
         <div>
           {!teams?.getUsersProjects && (
             <div className="font-semibold ml-5 text-lg mb-10">

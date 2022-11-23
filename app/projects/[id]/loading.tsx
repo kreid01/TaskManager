@@ -1,4 +1,4 @@
-import { LoadingSVG } from "../components/LoadingSVG";
+import { LoadingSVG } from "../../components/LoadingSVG";
 
 export default function Loading() {
   return <LoadingSVG />;

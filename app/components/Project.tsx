@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import Link from "next/link";
 import { UserName } from "./UserName";
+import { ProjectTeams } from "./ProjectTeams";
 
 interface Props {
   project?: Projects;
@@ -18,10 +19,11 @@ export const Project: React.FC<Props> = ({ project }) => {
 
   return (
     <div className=" border-[1px] border-orange-500 rounded-md p-2 mx-5 my-5 shadow-lg">
-      <Link href={`/teams/${project?.id}`}>
+      <Link href={`/projects/${project?.id}`}>
         <header className="flex justify-between">
           <h3 className="text-lg font-bold">
-            Project Name: {project?.projectName}
+            Project Name:{" "}
+            <span className="text-orange-500">{project?.projectName}</span>
           </h3>
           <button
             onClick={() =>
@@ -32,11 +34,17 @@ export const Project: React.FC<Props> = ({ project }) => {
             <FontAwesomeIcon icon={faTrashAlt} />{" "}
           </button>
         </header>
-        <div className="flex">
+        <div className="flex font-bold">
           <h4 className="mr-2">Project Lead:</h4>{" "}
-          {project && <UserName id={project?.projectLead as number} />}{" "}
+          <span className="text-amber-500">
+            {" "}
+            {project && <UserName id={project?.projectLead as number} />}
+          </span>
         </div>
-        <h2>Teams:</h2>
+        <h2>
+          <strong>Teams: </strong>
+          <ProjectTeams teams={project?.teams as string} />
+        </h2>
         <p className="text-gray-400 text-sm">Most recent task</p>
       </Link>
     </div>

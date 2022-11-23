@@ -7,10 +7,9 @@ import { Team } from "../components/Team";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 
-export default function teamsPage() {
+export default function TeamsPage() {
   const currentUser = useSelector((state: RootState) => state.user.value);
 
-  console.log(currentUser?.id);
   const { data: teams } = useGetUsersTeamsQuery({
     variables: { id: currentUser?.id as number },
   });
@@ -19,11 +18,7 @@ export default function teamsPage() {
       <Header title="Your Teams" />
       <div className="grid grid-cols-2 my-5">
         {teams?.getUsersTeams.map((team) => {
-          return (
-            <div>
-              <Team team={team} key={team.id} />
-            </div>
-          );
+          return <Team team={team} key={team.id} />;
         })}
       </div>
       <section className="w-full h-[78vh]">
