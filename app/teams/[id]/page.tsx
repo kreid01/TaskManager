@@ -1,14 +1,14 @@
 "use client";
-import { Header } from "../../components/Header";
-import { LoadingSVG } from "../../components/LoadingSVG";
+import { Header } from "../../components/UI/Header";
+import { LoadingSVG } from "../../components/UI/LoadingSVG";
 import {
   useGetTeamProjectQuery,
   useGetTeamQuery,
 } from "../../generated/graphql";
-import { UserName } from "../../components/UserName";
+import { UserName } from "../../components/UI/UserName";
 import Link from "next/link";
 import { Button } from "@material-ui/core";
-import { TeamMembers } from "../../components/TeamMembers";
+import { TeamMembers } from "../../components/Team/TeamMembers";
 
 export default function TeamPage({ params }: any) {
   const { data: team } = useGetTeamQuery({

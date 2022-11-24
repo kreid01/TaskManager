@@ -3,11 +3,11 @@ import {
   Teams,
   useDeleteTeamMutation,
   useGetTeamMembersQuery,
-} from "../generated/graphql";
+} from "../../generated/graphql";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import Link from "next/link";
-import { UserName } from "./UserName";
+import { UserName } from "../UI/UserName";
 import { TeamMembers } from "./TeamMembers";
 
 interface Props {

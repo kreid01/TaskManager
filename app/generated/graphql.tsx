@@ -20,12 +20,17 @@ export type Query = {
   bye: Scalars['String'];
   getProject: Projects;
   getProjects: Array<Projects>;
+  getProjectTasks: Array<Tasks>;
   getProjectTeams: Array<Teams>;
+  getTask: Tasks;
+  getTasks: Array<Tasks>;
   getTeam: Teams;
   getTeamMembers: Array<Users>;
   getTeamProjects: Array<Projects>;
+  getTeamTasks: Array<Tasks>;
   getUser?: Maybe<Users>;
   getUsersProjects: Array<Projects>;
+  getUsersTasks: Array<Tasks>;
   getUsersTeams: Array<Teams>;
   searchTeams: Array<Teams>;
   searchUsers: Array<Users>;
@@ -39,8 +44,18 @@ export type QueryGetProjectArgs = {
 };
 
 
+export type QueryGetProjectTasksArgs = {
+  id: Scalars['Float'];
+};
+
+
 export type QueryGetProjectTeamsArgs = {
   teams: Scalars['String'];
+};
+
+
+export type QueryGetTaskArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -59,7 +74,17 @@ export type QueryGetTeamProjectsArgs = {
 };
 
 
+export type QueryGetTeamTasksArgs = {
+  id: Scalars['Float'];
+};
+
+
 export type QueryGetUsersProjectsArgs = {
+  id: Scalars['Float'];
+};
+
+
+export type QueryGetUsersTasksArgs = {
   id: Scalars['Float'];
 };
 
@@ -87,6 +112,18 @@ export type Projects = {
   teams: Scalars['String'];
 };
 
+export type Tasks = {
+  __typename?: 'Tasks';
+  completeDate: Scalars['String'];
+  created: Scalars['String'];
+  creator: Scalars['Int'];
+  id: Scalars['Int'];
+  isComplete: Scalars['Boolean'];
+  projectId: Scalars['Int'];
+  taskName: Scalars['String'];
+  teamId: Scalars['Int'];
+};
+
 export type Teams = {
   __typename?: 'Teams';
   created: Scalars['String'];
@@ -108,8 +145,10 @@ export type Users = {
 export type Mutation = {
   __typename?: 'Mutation';
   createProject: Scalars['Boolean'];
+  createTask: Scalars['Boolean'];
   createTeam: Scalars['Boolean'];
   deleteProject: Scalars['Boolean'];
+  deleteTask: Scalars['Boolean'];
   deleteTeam: Scalars['Boolean'];
   deleteUser: Scalars['Boolean'];
   login: LoginResponse;
@@ -117,6 +156,7 @@ export type Mutation = {
   register: Scalars['Boolean'];
   revokeRefreshTokensForUser: Scalars['Boolean'];
   updateProject: Projects;
+  updateTask: Tasks;
   updateTeam: Teams;
 };
 
@@ -128,6 +168,15 @@ export type MutationCreateProjectArgs = {
 };
 
 
+export type MutationCreateTaskArgs = {
+  completeDate: Scalars['String'];
+  creator: Scalars['Float'];
+  projectId: Scalars['Float'];
+  taskName: Scalars['String'];
+  teamId: Scalars['Float'];
+};
+
+
 export type MutationCreateTeamArgs = {
   members: Scalars['String'];
   teamLead: Scalars['Float'];
@@ -136,6 +185,11 @@ export type MutationCreateTeamArgs = {
 
 
 export type MutationDeleteProjectArgs = {
+  id: Scalars['Float'];
+};
+
+
+export type MutationDeleteTaskArgs = {
   id: Scalars['Float'];
 };
 
@@ -173,6 +227,12 @@ export type MutationRevokeRefreshTokensForUserArgs = {
 export type MutationUpdateProjectArgs = {
   id: Scalars['Float'];
   tasks: Scalars['String'];
+};
+
+
+export type MutationUpdateTaskArgs = {
+  id: Scalars['Float'];
+  isComplete: Scalars['Boolean'];
 };
 
 
@@ -223,6 +283,53 @@ export type GetUsersProjectsQueryVariables = Exact<{
 
 
 export type GetUsersProjectsQuery = { __typename?: 'Query', getUsersProjects: Array<{ __typename?: 'Projects', id: number, projectName: string, projectLead: number, created: string, teams: string }> };
+
+export type CreateTaskMutationVariables = Exact<{
+  projectId: Scalars['Float'];
+  teamId: Scalars['Float'];
+  completeDate: Scalars['String'];
+  taskName: Scalars['String'];
+  creator: Scalars['Float'];
+}>;
+
+
+export type CreateTaskMutation = { __typename?: 'Mutation', createTask: boolean };
+
+export type DeleteTaskMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type DeleteTaskMutation = { __typename?: 'Mutation', deleteTask: boolean };
+
+export type GetProjectsTasksQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type GetProjectsTasksQuery = { __typename?: 'Query', getProjectTasks: Array<{ __typename?: 'Tasks', taskName: string, id: number, creator: number, teamId: number, projectId: number, isComplete: boolean, created: string, completeDate: string }> };
+
+export type GetTeamTasksQueryVariables = Exact<{
+  getTeamTasksId: Scalars['Float'];
+}>;
+
+
+export type GetTeamTasksQuery = { __typename?: 'Query', getTeamTasks: Array<{ __typename?: 'Tasks', taskName: string, id: number, creator: number }> };
+
+export type GetUsersTasksQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type GetUsersTasksQuery = { __typename?: 'Query', getUsersTasks: Array<{ __typename?: 'Tasks', taskName: string, id: number, creator: number, teamId: number, projectId: number, isComplete: boolean, created: string, completeDate: string }> };
+
+export type UpdateTaskMutationVariables = Exact<{
+  isComplete: Scalars['Boolean'];
+  id: Scalars['Float'];
+}>;
+
+
+export type UpdateTaskMutation = { __typename?: 'Mutation', updateTask: { __typename?: 'Tasks', isComplete: boolean } };
 
 export type CreateTeamMutationVariables = Exact<{
   members: Scalars['String'];
@@ -508,6 +615,227 @@ export function useGetUsersProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetUsersProjectsQueryHookResult = ReturnType<typeof useGetUsersProjectsQuery>;
 export type GetUsersProjectsLazyQueryHookResult = ReturnType<typeof useGetUsersProjectsLazyQuery>;
 export type GetUsersProjectsQueryResult = Apollo.QueryResult<GetUsersProjectsQuery, GetUsersProjectsQueryVariables>;
+export const CreateTaskDocument = gql`
+    mutation createTask($projectId: Float!, $teamId: Float!, $completeDate: String!, $taskName: String!, $creator: Float!) {
+  createTask(projectId: $projectId, teamId: $teamId, completeDate: $completeDate, taskName: $taskName, creator: $creator)
+}
+    `;
+export type CreateTaskMutationFn = Apollo.MutationFunction<CreateTaskMutation, CreateTaskMutationVariables>;
+
+/**
+ * __useCreateTaskMutation__
+ *
+ * To run a mutation, you first call `useCreateTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTaskMutation, { data, loading, error }] = useCreateTaskMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      teamId: // value for 'teamId'
+ *      completeDate: // value for 'completeDate'
+ *      taskName: // value for 'taskName'
+ *      creator: // value for 'creator'
+ *   },
+ * });
+ */
+export function useCreateTaskMutation(baseOptions?: Apollo.MutationHookOptions<CreateTaskMutation, CreateTaskMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTaskMutation, CreateTaskMutationVariables>(CreateTaskDocument, options);
+      }
+export type CreateTaskMutationHookResult = ReturnType<typeof useCreateTaskMutation>;
+export type CreateTaskMutationResult = Apollo.MutationResult<CreateTaskMutation>;
+export type CreateTaskMutationOptions = Apollo.BaseMutationOptions<CreateTaskMutation, CreateTaskMutationVariables>;
+export const DeleteTaskDocument = gql`
+    mutation deleteTask($id: Float!) {
+  deleteTask(id: $id)
+}
+    `;
+export type DeleteTaskMutationFn = Apollo.MutationFunction<DeleteTaskMutation, DeleteTaskMutationVariables>;
+
+/**
+ * __useDeleteTaskMutation__
+ *
+ * To run a mutation, you first call `useDeleteTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTaskMutation, { data, loading, error }] = useDeleteTaskMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteTaskMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTaskMutation, DeleteTaskMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTaskMutation, DeleteTaskMutationVariables>(DeleteTaskDocument, options);
+      }
+export type DeleteTaskMutationHookResult = ReturnType<typeof useDeleteTaskMutation>;
+export type DeleteTaskMutationResult = Apollo.MutationResult<DeleteTaskMutation>;
+export type DeleteTaskMutationOptions = Apollo.BaseMutationOptions<DeleteTaskMutation, DeleteTaskMutationVariables>;
+export const GetProjectsTasksDocument = gql`
+    query getProjectsTasks($id: Float!) {
+  getProjectTasks(id: $id) {
+    taskName
+    id
+    creator
+    teamId
+    projectId
+    isComplete
+    created
+    completeDate
+  }
+}
+    `;
+
+/**
+ * __useGetProjectsTasksQuery__
+ *
+ * To run a query within a React component, call `useGetProjectsTasksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectsTasksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectsTasksQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetProjectsTasksQuery(baseOptions: Apollo.QueryHookOptions<GetProjectsTasksQuery, GetProjectsTasksQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectsTasksQuery, GetProjectsTasksQueryVariables>(GetProjectsTasksDocument, options);
+      }
+export function useGetProjectsTasksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectsTasksQuery, GetProjectsTasksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectsTasksQuery, GetProjectsTasksQueryVariables>(GetProjectsTasksDocument, options);
+        }
+export type GetProjectsTasksQueryHookResult = ReturnType<typeof useGetProjectsTasksQuery>;
+export type GetProjectsTasksLazyQueryHookResult = ReturnType<typeof useGetProjectsTasksLazyQuery>;
+export type GetProjectsTasksQueryResult = Apollo.QueryResult<GetProjectsTasksQuery, GetProjectsTasksQueryVariables>;
+export const GetTeamTasksDocument = gql`
+    query getTeamTasks($getTeamTasksId: Float!) {
+  getTeamTasks(id: $getTeamTasksId) {
+    taskName
+    id
+    creator
+  }
+}
+    `;
+
+/**
+ * __useGetTeamTasksQuery__
+ *
+ * To run a query within a React component, call `useGetTeamTasksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTeamTasksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTeamTasksQuery({
+ *   variables: {
+ *      getTeamTasksId: // value for 'getTeamTasksId'
+ *   },
+ * });
+ */
+export function useGetTeamTasksQuery(baseOptions: Apollo.QueryHookOptions<GetTeamTasksQuery, GetTeamTasksQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamTasksQuery, GetTeamTasksQueryVariables>(GetTeamTasksDocument, options);
+      }
+export function useGetTeamTasksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamTasksQuery, GetTeamTasksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamTasksQuery, GetTeamTasksQueryVariables>(GetTeamTasksDocument, options);
+        }
+export type GetTeamTasksQueryHookResult = ReturnType<typeof useGetTeamTasksQuery>;
+export type GetTeamTasksLazyQueryHookResult = ReturnType<typeof useGetTeamTasksLazyQuery>;
+export type GetTeamTasksQueryResult = Apollo.QueryResult<GetTeamTasksQuery, GetTeamTasksQueryVariables>;
+export const GetUsersTasksDocument = gql`
+    query getUsersTasks($id: Float!) {
+  getUsersTasks(id: $id) {
+    taskName
+    id
+    creator
+    teamId
+    projectId
+    isComplete
+    created
+    completeDate
+  }
+}
+    `;
+
+/**
+ * __useGetUsersTasksQuery__
+ *
+ * To run a query within a React component, call `useGetUsersTasksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersTasksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersTasksQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUsersTasksQuery(baseOptions: Apollo.QueryHookOptions<GetUsersTasksQuery, GetUsersTasksQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersTasksQuery, GetUsersTasksQueryVariables>(GetUsersTasksDocument, options);
+      }
+export function useGetUsersTasksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersTasksQuery, GetUsersTasksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersTasksQuery, GetUsersTasksQueryVariables>(GetUsersTasksDocument, options);
+        }
+export type GetUsersTasksQueryHookResult = ReturnType<typeof useGetUsersTasksQuery>;
+export type GetUsersTasksLazyQueryHookResult = ReturnType<typeof useGetUsersTasksLazyQuery>;
+export type GetUsersTasksQueryResult = Apollo.QueryResult<GetUsersTasksQuery, GetUsersTasksQueryVariables>;
+export const UpdateTaskDocument = gql`
+    mutation updateTask($isComplete: Boolean!, $id: Float!) {
+  updateTask(isComplete: $isComplete, id: $id) {
+    isComplete
+  }
+}
+    `;
+export type UpdateTaskMutationFn = Apollo.MutationFunction<UpdateTaskMutation, UpdateTaskMutationVariables>;
+
+/**
+ * __useUpdateTaskMutation__
+ *
+ * To run a mutation, you first call `useUpdateTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTaskMutation, { data, loading, error }] = useUpdateTaskMutation({
+ *   variables: {
+ *      isComplete: // value for 'isComplete'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUpdateTaskMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTaskMutation, UpdateTaskMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTaskMutation, UpdateTaskMutationVariables>(UpdateTaskDocument, options);
+      }
+export type UpdateTaskMutationHookResult = ReturnType<typeof useUpdateTaskMutation>;
+export type UpdateTaskMutationResult = Apollo.MutationResult<UpdateTaskMutation>;
+export type UpdateTaskMutationOptions = Apollo.BaseMutationOptions<UpdateTaskMutation, UpdateTaskMutationVariables>;
 export const CreateTeamDocument = gql`
     mutation createTeam($members: String!, $teamName: String!, $teamLead: Float!) {
   createTeam(members: $members, teamName: $teamName, teamLead: $teamLead)

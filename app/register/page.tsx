@@ -19,7 +19,7 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import { useRegisterMutation } from "../generated/graphql";
-import { Header } from "../components/Header";
+import { Header } from "../components/UI/Header";
 import { useRouter } from "next/navigation";
 
 export default function RegistrationForm() {

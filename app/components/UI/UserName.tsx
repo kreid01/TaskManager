@@ -1,4 +1,4 @@
-import { useGetTeamMembersQuery } from "../generated/graphql";
+import { useGetTeamMembersQuery } from "../../generated/graphql";
 
 interface Props {
   id: number;

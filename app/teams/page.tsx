@@ -1,9 +1,9 @@
 "use client";
 import { Button } from "@material-ui/core";
 import Link from "next/link";
-import { Header } from "../components/Header";
+import { Header } from "../components/UI/Header";
 import { useGetUsersTeamsQuery } from "../generated/graphql";
-import { Team } from "../components/Team";
+import { Team } from "../components/Team/Team";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 

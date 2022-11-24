@@ -1,5 +1,5 @@
 "use client";
-import { Nav } from "./components/Nav";
+import { Nav } from "./components/UI/Nav";
 import {
   ApolloClient,
   ApolloProvider,
@@ -17,8 +17,8 @@ import "./globals.css";
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import store from "./store/store";
-import { Footer } from "./components/Footer";
-import { LoadingSVG } from "./components/LoadingSVG";
+import { Footer } from "./components/UI/Footer";
+import { LoadingSVG } from "./components/UI/LoadingSVG";
 
 export default function RootLayout({
   children,

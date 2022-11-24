@@ -1,11 +1,11 @@
 "use client";
 import { Button } from "@material-ui/core";
 import Link from "next/link";
-import { Header } from "../components/Header";
+import { Header } from "../components/UI/Header";
 import { useGetUsersProjectsQuery } from "../generated/graphql";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import { Project } from "../components/Project";
+import { Project } from "../components/Projects/Project";
 
 export default function ProjectsPage() {
   const currentUser = useSelector((state: RootState) => state.user.value);

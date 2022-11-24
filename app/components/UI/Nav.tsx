@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { useLogoutMutation, useGetUserQuery } from "../generated/graphql";
-import { RootState } from "../store/store";
-import { initialState, setUser, User } from "../slices/userSlice";
+import { useLogoutMutation, useGetUserQuery } from "../../generated/graphql";
+import { RootState } from "../../store/store";
+import { initialState, setUser, User } from "../../slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
