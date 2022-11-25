@@ -10,30 +10,36 @@ import {
 
 interface Props {
   task: Tasks;
+  refetchData: () => void;
 }
 
-export const Task: React.FC<Props> = ({ task }) => {
+export const Task: React.FC<Props> = ({ task, refetchData }) => {
   const [deleteTask] = useDeleteTaskMutation();
   const [updateTask] = useUpdateTaskMutation();
 
+  const handleDelete = () => {
+    deleteTask({ variables: { id: task.id } });
+    refetchData();
+  };
+  const handleUpdate = () => {
+    updateTask({
+      variables: {
+        id: task.id as number,
+        isComplete: true,
+      },
+    });
+    refetchData();
+  };
+
   return (
-    <div className=" border-[1px] border-orange-500 rounded-md p-2 m-5 shadow-lg">
+    <div className="text-white border-[1px] bg-orange-500 rounded-md p-2 m-5 shadow-lg">
       <header className="flex justify-between">
         {" "}
-        <h3 className="text-lg font-bold">
-          Task Name: <span className="text-orange-500">{task.taskName}</span>
-        </h3>
+        <h3 className="text-3xl font-bold">{task.taskName}</h3>
         <div>
           {!task.isComplete && (
             <button
-              onClick={() =>
-                updateTask({
-                  variables: {
-                    id: task.id as number,
-                    isComplete: true,
-                  },
-                })
-              }
+              onClick={() => handleUpdate()}
               className="bg-green-500 mr-5 text-white rounded-md w-8 h-8 hover:bg-green-800"
             >
               {" "}
@@ -42,20 +48,20 @@ export const Task: React.FC<Props> = ({ task }) => {
           )}
           <button
             className="bg-red-500 text-white rounded-md w-8 h-8 hover:bg-red-800"
-            onClick={() => deleteTask({ variables: { id: task.id } })}
+            onClick={() => handleDelete()}
           >
             <FontAwesomeIcon icon={faTrashAlt} />
           </button>
         </div>
       </header>
 
-      <h2 className="flex">
-        Project <ProjectName id={task.projectId} />
+      <h2 className="flex font-semibold text-2xl">
+        Project: <ProjectName id={task.projectId} />
       </h2>
       <h2>
         <TaskTeam id={task.teamId} />
       </h2>
-      <p className="text-gray-400 text-sm">
+      <p className="text-white text-sm">
         Date to be completed: {task.completeDate}
       </p>
     </div>

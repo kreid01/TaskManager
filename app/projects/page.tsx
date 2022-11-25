@@ -1,18 +1,21 @@
 "use client";
-import { Button } from "@material-ui/core";
-import Link from "next/link";
 import { Header } from "../components/UI/Header";
 import { useGetUsersProjectsQuery } from "../generated/graphql";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { Project } from "../components/Projects/Project";
+import { CreateProject } from "../components/Projects/CreateProject";
 
 export default function ProjectsPage() {
   const currentUser = useSelector((state: RootState) => state.user.value);
 
-  const { data: teams } = useGetUsersProjectsQuery({
+  const { data: teams, refetch } = useGetUsersProjectsQuery({
     variables: { id: currentUser?.id as number },
   });
+
+  const refetchData = () => {
+    refetch({ id: currentUser.id as number });
+  };
 
   return (
     <div>
@@ -21,26 +24,21 @@ export default function ProjectsPage() {
         {teams?.getUsersProjects.map((project) => {
           return (
             <div>
-              <Project project={project} />
+              <Project refetchData={refetchData} project={project} />
             </div>
           );
         })}
       </div>
       <section>
         <div>
-          {!teams?.getUsersProjects && (
+          {teams?.getUsersProjects && teams?.getUsersProjects.length === 0 && (
             <div className="font-semibold ml-5 text-lg mb-10">
               You are not a part of any projects, try creating one now.
             </div>
           )}
         </div>
-        <div className="ml-5">
-          <Link href="/projects/create">
-            <Button color="primary" type="button" variant="contained">
-              Create Project
-            </Button>
-          </Link>
-        </div>
+
+        <CreateProject />
       </section>
     </div>
   );

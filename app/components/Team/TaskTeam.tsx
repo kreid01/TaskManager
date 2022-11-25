@@ -13,17 +13,15 @@ export const TaskTeam: React.FC<Props> = ({ id }) => {
   });
 
   return !loading ? (
-    <div className=" border-[1px] border-orange-500 rounded-md mr-5 p-2 mt-3 shadow-lg">
-      {data?.getTeam && (
-        <section key={id}>
-          <Link href={`/teams/${id}`}>
-            <span className="font-semibold text-blue-900">
-              {data.getTeam.teamName}
-            </span>
-            <TeamMembers members={data.getTeam.members} />
-          </Link>
+    <div className="border-[1px] rounded-md mr-5 p-1 mt-4 shadow-lg">
+      <Link href={`/teams/${id}`}>
+        <section className="flex" key={id}>
+          <span className="font-semibold text-white text-lg mt-3 ml-3">
+            {data?.getTeam.teamName}
+          </span>
+          <TeamMembers members={data?.getTeam.members as string} />
         </section>
-      )}
+      </Link>
     </div>
   ) : (
     <LoadingSVG></LoadingSVG>

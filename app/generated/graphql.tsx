@@ -155,7 +155,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   register: Scalars['Boolean'];
   revokeRefreshTokensForUser: Scalars['Boolean'];
-  updateProject: Projects;
+  updateProjectTeams: Projects;
   updateTask: Tasks;
   updateTeam: Teams;
 };
@@ -224,9 +224,9 @@ export type MutationRevokeRefreshTokensForUserArgs = {
 };
 
 
-export type MutationUpdateProjectArgs = {
+export type MutationUpdateProjectTeamsArgs = {
   id: Scalars['Float'];
-  tasks: Scalars['String'];
+  teams: Scalars['String'];
 };
 
 
@@ -283,6 +283,14 @@ export type GetUsersProjectsQueryVariables = Exact<{
 
 
 export type GetUsersProjectsQuery = { __typename?: 'Query', getUsersProjects: Array<{ __typename?: 'Projects', id: number, projectName: string, projectLead: number, created: string, teams: string }> };
+
+export type UpdateProjectTeamsMutationVariables = Exact<{
+  teams: Scalars['String'];
+  id: Scalars['Float'];
+}>;
+
+
+export type UpdateProjectTeamsMutation = { __typename?: 'Mutation', updateProjectTeams: { __typename?: 'Projects', teams: string } };
 
 export type CreateTaskMutationVariables = Exact<{
   projectId: Scalars['Float'];
@@ -615,6 +623,40 @@ export function useGetUsersProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetUsersProjectsQueryHookResult = ReturnType<typeof useGetUsersProjectsQuery>;
 export type GetUsersProjectsLazyQueryHookResult = ReturnType<typeof useGetUsersProjectsLazyQuery>;
 export type GetUsersProjectsQueryResult = Apollo.QueryResult<GetUsersProjectsQuery, GetUsersProjectsQueryVariables>;
+export const UpdateProjectTeamsDocument = gql`
+    mutation updateProjectTeams($teams: String!, $id: Float!) {
+  updateProjectTeams(teams: $teams, id: $id) {
+    teams
+  }
+}
+    `;
+export type UpdateProjectTeamsMutationFn = Apollo.MutationFunction<UpdateProjectTeamsMutation, UpdateProjectTeamsMutationVariables>;
+
+/**
+ * __useUpdateProjectTeamsMutation__
+ *
+ * To run a mutation, you first call `useUpdateProjectTeamsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProjectTeamsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProjectTeamsMutation, { data, loading, error }] = useUpdateProjectTeamsMutation({
+ *   variables: {
+ *      teams: // value for 'teams'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUpdateProjectTeamsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProjectTeamsMutation, UpdateProjectTeamsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateProjectTeamsMutation, UpdateProjectTeamsMutationVariables>(UpdateProjectTeamsDocument, options);
+      }
+export type UpdateProjectTeamsMutationHookResult = ReturnType<typeof useUpdateProjectTeamsMutation>;
+export type UpdateProjectTeamsMutationResult = Apollo.MutationResult<UpdateProjectTeamsMutation>;
+export type UpdateProjectTeamsMutationOptions = Apollo.BaseMutationOptions<UpdateProjectTeamsMutation, UpdateProjectTeamsMutationVariables>;
 export const CreateTaskDocument = gql`
     mutation createTask($projectId: Float!, $teamId: Float!, $completeDate: String!, $taskName: String!, $creator: Float!) {
   createTask(projectId: $projectId, teamId: $teamId, completeDate: $completeDate, taskName: $taskName, creator: $creator)

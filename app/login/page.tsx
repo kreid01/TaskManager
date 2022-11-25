@@ -24,17 +24,14 @@ import {
   useLoginMutation,
 } from "../generated/graphql";
 
-interface Props {
-  setLogin: () => void;
-  closeCartAndLogin: () => void;
-}
+
 
 export type Login = {
   email: string;
   password: string;
 };
 
-export const Login: React.FC<Props> = ({}) => {
+export default function LoginPage ({}) {
   const router = useRouter();
   const [login, loading] = useLoginMutation();
   const [showPassword, setShowPassword] = useState(false);
@@ -166,4 +163,3 @@ export const Login: React.FC<Props> = ({}) => {
   );
 };
 
-export default Login;

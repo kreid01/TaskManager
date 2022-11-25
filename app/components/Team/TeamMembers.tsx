@@ -4,14 +4,14 @@ interface Props {
   members: string;
 }
 
-const colors = ["orange", "red", "green", "pink", "purple"];
+const colors = ["blue", "red", "green", "pink", "purple"];
 
 export const TeamMembers: React.FC<Props> = ({ members }) => {
   const { data: teamMembers } = useGetTeamMembersQuery({
     variables: { team: members.trim() as string },
   });
   return (
-    <div className=" border-[1px] flex border-orange-500 rounded-md mr-5 p-2 mt-3 shadow-lg">
+    <div className="flex mr-5 p-2 ">
       {teamMembers?.getTeamMembers.map((member) => {
         const color = colors[Math.floor(Math.random() * colors.length)];
         return (
@@ -20,8 +20,8 @@ export const TeamMembers: React.FC<Props> = ({ members }) => {
               className={
                 color === "red"
                   ? "member bg-red-500"
-                  : color === "orange"
-                  ? "member bg-orange-500"
+                  : color === "blue"
+                  ? "member bg-blue-500"
                   : color === "green"
                   ? "member bg-green-500"
                   : color === "pink"

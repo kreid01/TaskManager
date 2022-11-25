@@ -1,0 +1,5 @@
+mutation updateProjectTeams($teams: String!, $id: Float!) {
+  updateProjectTeams(teams: $teams, id: $id) {
+    teams
+  }
+}

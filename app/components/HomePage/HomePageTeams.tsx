@@ -12,9 +12,13 @@ export const HomePageTeams: React.FC<Props> = ({ id }) => {
 
   return (
     <section>
-      <h2 className="text-blue-800 mt-5 ml-5 font-bold text-2xl">
-        Recent Teams
-      </h2>
+      <div className="border-b-2 border-y-blue-600">
+        {" "}
+        <h2 className="text-blue-800 mt-5 ml-5 font-bold text-4xl">
+          Recent Teams
+        </h2>
+      </div>
+
       <div className="grid grid-cols-2">
         {teams?.getUsersTeams &&
           teams?.getUsersTeams.map((team) => {

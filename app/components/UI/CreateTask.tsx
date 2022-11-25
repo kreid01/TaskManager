@@ -7,19 +7,21 @@ import {
   Button,
 } from "@material-ui/core";
 import {
+  GetUsersTasksDocument,
   Teams,
   useCreateTaskMutation,
-  useSearchTeamsQuery,
 } from "../../generated/graphql";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import { AddTeam } from "../../projects/[id]/AddTeam";
 
 interface Props {
   projectId: number;
+  refetchData: () => void;
 }
 
-export const CreateTask: React.FC<Props> = ({ projectId }) => {
+export const CreateTask: React.FC<Props> = ({ projectId, refetchData }) => {
   const currentUser = useSelector((state: RootState) => state.user.value);
   const [createTask] = useCreateTaskMutation();
   const initalState = {
@@ -31,21 +33,11 @@ export const CreateTask: React.FC<Props> = ({ projectId }) => {
     taskName: string;
     completeDate: string;
   };
-  const [search, setSearch] = useState<string>();
-  const { data } = useSearchTeamsQuery({
-    variables: { search: search as string },
-  });
   const [newTask, setNewTask] = useState<NewTask>(initalState);
   const [newTeam, setNewTeam] = useState({
     name: "",
     id: 0,
   });
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setSearch(e.target.value);
-  };
-
   const handleTeamChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -65,7 +57,9 @@ export const CreateTask: React.FC<Props> = ({ projectId }) => {
         creator: currentUser.id as number,
         teamId: newTeam.id,
       },
+      refetchQueries: [{ query: GetUsersTasksDocument }],
     });
+    refetchData();
   };
 
   const addTeamToProject = (team: Teams) => {
@@ -123,40 +117,7 @@ export const CreateTask: React.FC<Props> = ({ projectId }) => {
                   type="text"
                 />
               </FormControl>
-              <FormControl
-                style={{ margin: "20px 0", width: "25ch" }}
-                variant="outlined"
-              >
-                <InputLabel htmlFor="outlined-adornment-password">
-                  Add Teams
-                </InputLabel>
-                <OutlinedInput
-                  style={{ width: "380px", height: "55px" }}
-                  onChange={(e) => handleChange(e)}
-                  id="mebmers"
-                  label="Add Members"
-                  margin="dense"
-                  name="members"
-                  type="text"
-                />
-              </FormControl>
-              {data &&
-                data.searchTeams.map((team) => {
-                  return (
-                    <div
-                      key={team.id}
-                      className="border-b-[1px] border-gray-300 w-[380px] justify-between flex"
-                    >
-                      <p>{team.teamName}</p>
-                      <button
-                        type="button"
-                        onClick={() => addTeamToProject(team)}
-                      >
-                        +
-                      </button>
-                    </div>
-                  );
-                })}
+              <AddTeam addTeamToProject={addTeamToProject} />
             </div>
           </DialogContent>
           <div className="font-bold text-orange-500 ml-6">{newTeam.name}</div>

@@ -1,14 +1,14 @@
 "use client";
 import {
+  GetUsersTeamsDocument,
   Teams,
   useDeleteTeamMutation,
-  useGetTeamMembersQuery,
 } from "../../generated/graphql";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import Link from "next/link";
-import { UserName } from "../UI/UserName";
 import { TeamMembers } from "./TeamMembers";
+import { UserCircle } from "../UI/UserCircle";
 
 interface Props {
   team?: Teams;
@@ -17,29 +17,41 @@ interface Props {
 export const Team: React.FC<Props> = ({ team }) => {
   const [deleteTeam] = useDeleteTeamMutation();
 
+  const handleDelete = (event: any) => {
+    event.stopPropagation();
+    deleteTeam({
+      variables: { id: team?.id as number },
+      refetchQueries: () => [{ query: GetUsersTeamsDocument }],
+    });
+  };
+
   return (
-    <div className=" border-[1px] border-orange-500 rounded-md p-2 mx-5 my-5 shadow-lg">
+    <div className=" border-[1px] bg-orange-500 rounded-md p-2 mx-5 my-5 shadow-lg text-white">
       <Link href={`/teams/${team?.id}`}>
         <header className="flex justify-between">
-          <h3 className="text-lg font-bold">Team Name: {team?.teamName}</h3>
+          <div className="flex">
+            {" "}
+            <h3 className="text-2xl font-bold text-white mt-1">
+              {" "}
+              {team?.teamName}
+            </h3>
+            <div className="ml-2">
+              {" "}
+              {team && <UserCircle id={team?.teamLead as number} />}{" "}
+            </div>{" "}
+          </div>
+
           <button
-            onClick={() =>
-              deleteTeam({ variables: { id: team?.id as number } })
-            }
+            onClick={(event) => handleDelete(event)}
             className="bg-red-500 text-white rounded-md w-8 h-8 hover:bg-red-800"
           >
             <FontAwesomeIcon icon={faTrashAlt} />{" "}
           </button>
         </header>
-        <div className="flex">
-          <h4 className="mr-2">Team Lead:</h4>{" "}
-          {team && <UserName id={team?.teamLead as number} />}{" "}
-        </div>
         <section>
-          Members:
           <TeamMembers members={team?.members as string} />
         </section>
-        <p className="text-gray-400 text-sm">Most recent task</p>
+        <p className="text-white text-sm">Most recent task</p>
       </Link>
     </div>
   );
