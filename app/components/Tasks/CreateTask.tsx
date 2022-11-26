@@ -7,7 +7,7 @@ import {
   Button,
 } from "@material-ui/core";
 import {
-  GetUsersTasksDocument,
+  GetProjectsTasksDocument,
   Teams,
   useCreateTaskMutation,
 } from "../../generated/graphql";
@@ -18,10 +18,9 @@ import { AddTeam } from "../../projects/[id]/AddTeam";
 
 interface Props {
   projectId: number;
-  refetchData: () => void;
 }
 
-export const CreateTask: React.FC<Props> = ({ projectId, refetchData }) => {
+export const CreateTask: React.FC<Props> = ({ projectId }) => {
   const currentUser = useSelector((state: RootState) => state.user.value);
   const [createTask] = useCreateTaskMutation();
   const initalState = {
@@ -57,9 +56,10 @@ export const CreateTask: React.FC<Props> = ({ projectId, refetchData }) => {
         creator: currentUser.id as number,
         teamId: newTeam.id,
       },
-      refetchQueries: [{ query: GetUsersTasksDocument }],
+      refetchQueries: [
+        { query: GetProjectsTasksDocument, variables: { id: projectId } },
+      ],
     });
-    refetchData();
   };
 
   const addTeamToProject = (team: Teams) => {

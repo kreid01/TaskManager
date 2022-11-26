@@ -1,0 +1,3 @@
+mutation deleteTeamTasks($id: Float!) {
+  deleteTeamTasks(id: $id)
+}

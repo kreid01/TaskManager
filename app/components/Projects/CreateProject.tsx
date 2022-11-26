@@ -8,6 +8,7 @@ import {
   Button,
 } from "@material-ui/core";
 import {
+  GetTeamProjectDocument,
   Teams,
   useCreateProjectMutation,
   useSearchTeamsQuery,
@@ -60,6 +61,7 @@ export const CreateProject = () => {
         projectLead: currentUser.id as number,
         teams: newProject.teams,
       },
+      refetchQueries: () => [{ query: GetTeamProjectDocument }],
     });
     setOpen(false);
   };
@@ -73,8 +75,8 @@ export const CreateProject = () => {
 
   return (
     <div>
-      {open ? (
-        <div className="ml-5">
+      {!open ? (
+        <div className="ml-5 my-5">
           <Button
             onClick={() => setOpen(true)}
             color="primary"

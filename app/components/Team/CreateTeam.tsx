@@ -8,6 +8,7 @@ import {
   Button,
 } from "@material-ui/core";
 import {
+  GetUsersTeamsDocument,
   useCreateTeamMutation,
   Users,
   useSearchUsersQuery,
@@ -16,11 +17,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 
-interface Props {
-  refetchData: () => void;
-}
-
-export const CreateTeam: React.FC<Props> = ({ refetchData }) => {
+export const CreateTeam: React.FC = ({}) => {
   type CreateTeam = {
     teamName: string;
     members: string;
@@ -49,9 +46,9 @@ export const CreateTeam: React.FC<Props> = ({ refetchData }) => {
         teamLead: currentUser.id as number,
         members: newTeam.members,
       },
+      refetchQueries: () => [{ query: GetUsersTeamsDocument }],
     });
     setOpen(false);
-    refetchData();
   };
 
   const handleChange = (

@@ -13,9 +13,7 @@ export default function ProjectsPage() {
     variables: { id: currentUser?.id as number },
   });
 
-  const refetchData = () => {
-    refetch({ id: currentUser.id as number });
-  };
+ 
 
   return (
     <div>
@@ -24,7 +22,7 @@ export default function ProjectsPage() {
         {teams?.getUsersProjects.map((project) => {
           return (
             <div>
-              <Project refetchData={refetchData} project={project} />
+              <Project project={project} />
             </div>
           );
         })}

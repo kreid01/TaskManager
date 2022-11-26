@@ -24,13 +24,7 @@ export const HomePageProjects: React.FC<Props> = ({ id }) => {
       <div className="grid grid-cols-2">
         {projects?.getUsersProjects &&
           projects.getUsersProjects.map((project) => {
-            return (
-              <Project
-                refetchData={refetchData}
-                key={project.id}
-                project={project}
-              />
-            );
+            return <Project key={project.id} project={project} />;
           })}
       </div>
     </section>

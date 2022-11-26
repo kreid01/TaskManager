@@ -1,5 +1,5 @@
 import { useGetUsersTasksQuery } from "../../generated/graphql";
-import { Task } from "../UI/Task";
+import { Task } from "../Tasks/Task";
 
 interface Props {
   id: number;
@@ -24,7 +24,7 @@ export const HomePageTasks: React.FC<Props> = ({ id }) => {
       <div className=" grid grid-cols-2">
         {tasks &&
           tasks.getUsersTasks.map((task) => {
-            return <Task refetchData={refetchData} task={task} />;
+            return <Task task={task} />;
           })}
       </div>
     </section>

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProjectName } from "../Projects/ProjectName";
 import { TaskTeam } from "../Team/TaskTeam";
 import {
+  GetUsersTasksDocument,
   Tasks,
   useDeleteTaskMutation,
   useUpdateTaskMutation,
@@ -10,16 +11,18 @@ import {
 
 interface Props {
   task: Tasks;
-  refetchData: () => void;
 }
 
-export const Task: React.FC<Props> = ({ task, refetchData }) => {
+export const Task: React.FC<Props> = ({ task }) => {
   const [deleteTask] = useDeleteTaskMutation();
   const [updateTask] = useUpdateTaskMutation();
 
   const handleDelete = () => {
-    deleteTask({ variables: { id: task.id } });
-    refetchData();
+    deleteTask({
+      variables: { id: task.id },
+
+      refetchQueries: () => [{ query: GetUsersTasksDocument }],
+    });
   };
   const handleUpdate = () => {
     updateTask({
@@ -27,8 +30,8 @@ export const Task: React.FC<Props> = ({ task, refetchData }) => {
         id: task.id as number,
         isComplete: true,
       },
+      refetchQueries: () => [{ query: GetUsersTasksDocument }],
     });
-    refetchData();
   };
 
   return (

@@ -35,7 +35,8 @@ export default function RootLayout({
         contrastText: "#fff",
       },
       secondary: {
-        main: "rgb(253 186 116);",
+        main: "rgb(239 68 68)",
+        dark: "rgb(153 27 27)",
       },
     },
   });
@@ -141,8 +142,9 @@ export default function RootLayout({
               <body>
                 <main>
                   <Nav />
-                  <div className="ml-[25%] lg:ml-[16.7%] h-[100vh]">
-                    {children} <Footer />
+                  <div className="ml-[25%] lg:ml-[16.7%] min-h-[100vh]">
+                    <div className="min-h-[89vh]"> {children} </div>
+                    <Footer />
                   </div>
                 </main>
               </body>

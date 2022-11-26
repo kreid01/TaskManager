@@ -150,10 +150,12 @@ export type Mutation = {
   deleteProject: Scalars['Boolean'];
   deleteTask: Scalars['Boolean'];
   deleteTeam: Scalars['Boolean'];
+  deleteTeamTasks: Scalars['Boolean'];
   deleteUser: Scalars['Boolean'];
   login: LoginResponse;
   logout: Scalars['Boolean'];
   register: Scalars['Boolean'];
+  removeTeamFromProjects: Scalars['Boolean'];
   revokeRefreshTokensForUser: Scalars['Boolean'];
   updateProjectTeams: Projects;
   updateTask: Tasks;
@@ -199,6 +201,11 @@ export type MutationDeleteTeamArgs = {
 };
 
 
+export type MutationDeleteTeamTasksArgs = {
+  id: Scalars['Float'];
+};
+
+
 export type MutationDeleteUserArgs = {
   id: Scalars['Float'];
 };
@@ -216,6 +223,11 @@ export type MutationRegisterArgs = {
   lastName: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
+};
+
+
+export type MutationRemoveTeamFromProjectsArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -263,6 +275,13 @@ export type DeleteProjectMutationVariables = Exact<{
 
 export type DeleteProjectMutation = { __typename?: 'Mutation', deleteProject: boolean };
 
+export type DeleteTeamFromProjectsMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type DeleteTeamFromProjectsMutation = { __typename?: 'Mutation', removeTeamFromProjects: boolean };
+
 export type GetProjectQueryVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -309,6 +328,13 @@ export type DeleteTaskMutationVariables = Exact<{
 
 
 export type DeleteTaskMutation = { __typename?: 'Mutation', deleteTask: boolean };
+
+export type DeleteTeamTasksMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type DeleteTeamTasksMutation = { __typename?: 'Mutation', deleteTeamTasks: boolean };
 
 export type GetProjectsTasksQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -509,6 +535,37 @@ export function useDeleteProjectMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteProjectMutationHookResult = ReturnType<typeof useDeleteProjectMutation>;
 export type DeleteProjectMutationResult = Apollo.MutationResult<DeleteProjectMutation>;
 export type DeleteProjectMutationOptions = Apollo.BaseMutationOptions<DeleteProjectMutation, DeleteProjectMutationVariables>;
+export const DeleteTeamFromProjectsDocument = gql`
+    mutation deleteTeamFromProjects($id: Float!) {
+  removeTeamFromProjects(id: $id)
+}
+    `;
+export type DeleteTeamFromProjectsMutationFn = Apollo.MutationFunction<DeleteTeamFromProjectsMutation, DeleteTeamFromProjectsMutationVariables>;
+
+/**
+ * __useDeleteTeamFromProjectsMutation__
+ *
+ * To run a mutation, you first call `useDeleteTeamFromProjectsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTeamFromProjectsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTeamFromProjectsMutation, { data, loading, error }] = useDeleteTeamFromProjectsMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteTeamFromProjectsMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTeamFromProjectsMutation, DeleteTeamFromProjectsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTeamFromProjectsMutation, DeleteTeamFromProjectsMutationVariables>(DeleteTeamFromProjectsDocument, options);
+      }
+export type DeleteTeamFromProjectsMutationHookResult = ReturnType<typeof useDeleteTeamFromProjectsMutation>;
+export type DeleteTeamFromProjectsMutationResult = Apollo.MutationResult<DeleteTeamFromProjectsMutation>;
+export type DeleteTeamFromProjectsMutationOptions = Apollo.BaseMutationOptions<DeleteTeamFromProjectsMutation, DeleteTeamFromProjectsMutationVariables>;
 export const GetProjectDocument = gql`
     query getProject($id: Float!) {
   getProject(id: $id) {
@@ -723,6 +780,37 @@ export function useDeleteTaskMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteTaskMutationHookResult = ReturnType<typeof useDeleteTaskMutation>;
 export type DeleteTaskMutationResult = Apollo.MutationResult<DeleteTaskMutation>;
 export type DeleteTaskMutationOptions = Apollo.BaseMutationOptions<DeleteTaskMutation, DeleteTaskMutationVariables>;
+export const DeleteTeamTasksDocument = gql`
+    mutation deleteTeamTasks($id: Float!) {
+  deleteTeamTasks(id: $id)
+}
+    `;
+export type DeleteTeamTasksMutationFn = Apollo.MutationFunction<DeleteTeamTasksMutation, DeleteTeamTasksMutationVariables>;
+
+/**
+ * __useDeleteTeamTasksMutation__
+ *
+ * To run a mutation, you first call `useDeleteTeamTasksMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTeamTasksMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTeamTasksMutation, { data, loading, error }] = useDeleteTeamTasksMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteTeamTasksMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTeamTasksMutation, DeleteTeamTasksMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTeamTasksMutation, DeleteTeamTasksMutationVariables>(DeleteTeamTasksDocument, options);
+      }
+export type DeleteTeamTasksMutationHookResult = ReturnType<typeof useDeleteTeamTasksMutation>;
+export type DeleteTeamTasksMutationResult = Apollo.MutationResult<DeleteTeamTasksMutation>;
+export type DeleteTeamTasksMutationOptions = Apollo.BaseMutationOptions<DeleteTeamTasksMutation, DeleteTeamTasksMutationVariables>;
 export const GetProjectsTasksDocument = gql`
     query getProjectsTasks($id: Float!) {
   getProjectTasks(id: $id) {

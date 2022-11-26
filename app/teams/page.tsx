@@ -1,6 +1,9 @@
 "use client";
 import { Header } from "../components/UI/Header";
-import { useGetUsersTeamsQuery } from "../generated/graphql";
+import {
+  useDeleteTeamMutation,
+  useGetUsersTeamsQuery,
+} from "../generated/graphql";
 import { Team } from "../components/Team/Team";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
@@ -13,10 +16,6 @@ export default function TeamsPage() {
     variables: { id: currentUser?.id as number },
   });
 
-  const refetchData = () => {
-    refetch({ id: currentUser?.id as number });
-  };
-
   return (
     <div>
       <Header title="Your Teams" />
@@ -27,7 +26,7 @@ export default function TeamsPage() {
               return <Team team={team} key={team.id} />;
             })}
           </div>
-          <section className="w-full h-[78vh]">
+          <section className="w-full ">
             <div>
               {!teams?.getUsersTeams && (
                 <div className="font-semibold ml-5 text-lg mb-10">
@@ -36,11 +35,11 @@ export default function TeamsPage() {
               )}
             </div>
 
-            <CreateTeam refetchData={refetchData} />
+            <CreateTeam />
           </section>
         </div>
       ) : (
-        <CreateTeam refetchData={refetchData} />
+        <CreateTeam />
       )}
     </div>
   );

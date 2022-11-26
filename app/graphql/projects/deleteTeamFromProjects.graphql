@@ -1,0 +1,3 @@
+mutation deleteTeamFromProjects($id: Float!) {
+  removeTeamFromProjects(id: $id)
+}

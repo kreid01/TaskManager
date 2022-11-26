@@ -1,8 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { setAccessToken } from "../utils/accessToken";
 import Link from "next/link";
 import {
@@ -24,14 +22,15 @@ import {
   useLoginMutation,
 } from "../generated/graphql";
 
-
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export type Login = {
   email: string;
   password: string;
 };
 
-export default function LoginPage ({}) {
+export default function LoginPage({}) {
   const router = useRouter();
   const [login, loading] = useLoginMutation();
   const [showPassword, setShowPassword] = useState(false);
@@ -122,7 +121,11 @@ export default function LoginPage ({}) {
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? (
+                        <FontAwesomeIcon icon={faEyeSlash} />
+                      ) : (
+                        <FontAwesomeIcon icon={faEye} />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 }

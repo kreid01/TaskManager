@@ -2,15 +2,14 @@
 /* eslint-disable react/jsx-wrap-multilines */
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { object, string, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import {
   Button,
   DialogContent,
   DialogActions,
-  CircularProgress,
   IconButton,
   InputAdornment,
   OutlinedInput,
@@ -191,7 +190,11 @@ export default function RegistrationForm() {
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? (
+                        <FontAwesomeIcon icon={faEyeSlash} />
+                      ) : (
+                        <FontAwesomeIcon icon={faEye} />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -221,7 +224,11 @@ export default function RegistrationForm() {
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? (
+                        <FontAwesomeIcon icon={faEyeSlash} />
+                      ) : (
+                        <FontAwesomeIcon icon={faEye} />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 }

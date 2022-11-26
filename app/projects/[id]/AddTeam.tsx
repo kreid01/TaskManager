@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FormControl, OutlinedInput, InputLabel } from "@material-ui/core";
-import { useSearchTeamsQuery } from "../../generated/graphql";
+import { Teams, useSearchTeamsQuery } from "../../generated/graphql";
 
 interface Props {
   addTeamToProject: (team: Teams) => void;

@@ -1,34 +1,35 @@
 "use client";
 import { LoadingSVG } from "../../components/UI/LoadingSVG";
 import {
-  GetUsersTeamsDocument,
+  GetProjectTeamsDocument,
+  GetUsersProjectsDocument,
   Teams,
+  useDeleteProjectMutation,
   useGetProjectQuery,
   useGetProjectsTasksQuery,
   useUpdateProjectTeamsMutation,
 } from "../../generated/graphql";
 import { Button } from "@material-ui/core";
-import { ProjectTeams } from "../../components//Projects/ProjectTeams";
-import { Task } from "../../components/UI/Task";
+import { Task } from "../../components/Tasks/Task";
 import { useState } from "react";
-import { CreateTask } from "../../components/UI/CreateTask";
 import { UserCircle } from "../../components/UI/UserCircle";
+import { CreateTask } from "../../components/Tasks/CreateTask";
 import { AddTeam } from "./AddTeam";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/navigation";
+import { ProjectTeams } from "../../components/Projects/ProjectTeams";
 
 export default function TeamPage({ params }: any) {
   const { data: project } = useGetProjectQuery({
     variables: { id: parseInt(params.id) as number },
   });
 
-  const { data, refetch } = useGetProjectsTasksQuery({
+  const { data } = useGetProjectsTasksQuery({
     variables: { id: parseInt(params.id) as number },
   });
 
   const [updateProject] = useUpdateProjectTeamsMutation();
-
-  const refetchData = () => {
-    refetch({ id: parseInt(params.id) as number });
-  };
 
   const addTeamToProject = (team: Teams) => {
     updateProject({
@@ -36,13 +37,24 @@ export default function TeamPage({ params }: any) {
         id: parseInt(params.id),
         teams: project?.getProject.teams + `${team.id}, `,
       },
-      refetchQueries: () => [
+      refetchQueries: [
         {
-          query: GetUsersTeamsDocument,
+          query: GetProjectTeamsDocument,
           variables: { id: parseInt(params.id) },
         },
       ],
     });
+  };
+
+  const router = useRouter();
+  const [deleteProject] = useDeleteProjectMutation();
+
+  const handleDelete = () => {
+    deleteProject({
+      variables: { id: parseInt(params.id) },
+      refetchQueries: () => [{ query: GetUsersProjectsDocument }],
+    });
+    router.push("/projects");
   };
 
   const [open, setOpen] = useState(false);
@@ -52,7 +64,7 @@ export default function TeamPage({ params }: any) {
       <header className="header ml-0 relative">
         <h1 className="title">{project.getProject.projectName}</h1>
         <div className=" flex font-bold absolute left-3 top-[15px] text-2xl">
-          <div className="text-white"> Team Lead</div>{" "}
+          <div className="text-white"> Project Lead</div>{" "}
           <div className="-mt-2 ml-5">
             <UserCircle id={project?.getProject.projectLead as number} />
           </div>
@@ -61,9 +73,17 @@ export default function TeamPage({ params }: any) {
       <div>
         <section className="mt-5 text-lg mx-auto">
           <div className="border-b-2 border-blue-600">
-            <h2 className="text-blue-800 font-bold m-5 text-4xl">Teams</h2>
+            <h2 className="text-blue-800 font-bold ml-5 mt-5 text-4xl">
+              Teams
+            </h2>
           </div>
-          <ProjectTeams teams={project.getProject.teams} />{" "}
+          {project.getProject && project.getProject.teams.length > 2 ? (
+            <ProjectTeams teams={project.getProject.teams} />
+          ) : (
+            <div className="m-5">
+              This project does not currently have any teams.
+            </div>
+          )}{" "}
           <div className="ml-5 mt-5">
             {" "}
             {!open ? (
@@ -83,26 +103,33 @@ export default function TeamPage({ params }: any) {
         <section className="mt-10 text-lg mx-auto">
           <div className="border-b-2 border-blue-600">
             {" "}
-            <h2 className="text-blue-800 ml-5 my-5 font-bold text-4xl">
+            <h2 className="text-blue-800 ml-5 mt-5 font-bold text-4xl">
               Recent Tasks
             </h2>
           </div>
 
           <div className=" grid-cols-3 grid">
-            {}
-            {data?.getProjectTasks &&
-              data?.getProjectTasks.map((task) => (
-                <Task refetchData={refetchData} task={task} />
-              ))}
+            {data?.getProjectTasks && data.getProjectTasks.length > 0 ? (
+              data?.getProjectTasks.map((task) => <Task task={task} />)
+            ) : (
+              <div className="m-5">
+                This project does not currently have any tasks.
+              </div>
+            )}
           </div>
           <div className="ml-5">
-            <CreateTask
-              refetchData={refetchData}
-              projectId={params.id as number}
-            />
+            <CreateTask projectId={params.id as number} />
           </div>
         </section>
       </div>{" "}
+      <Button
+        onClick={() => handleDelete()}
+        variant="contained"
+        color="secondary"
+        style={{ width: "200px", color: "white", margin: "25px" }}
+      >
+        <FontAwesomeIcon icon={faTrashAlt} className="mr-3" /> Delete Project
+      </Button>
     </div>
   ) : (
     <LoadingSVG />
