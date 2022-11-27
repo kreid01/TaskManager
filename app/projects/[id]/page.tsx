@@ -1,47 +1,159 @@
 "use client";
-import { Header } from "../../components/Header";
-import { LoadingSVG } from "../../components/LoadingSVG";
-import { useGetProjectQuery } from "../../generated/graphql";
-import { UserName } from "../../components/UserName";
-import Link from "next/link";
+import { LoadingSVG } from "../../components/UI/LoadingSVG";
+import {
+  GetProjectTeamsDocument,
+  GetUsersProjectsDocument,
+  Tasks,
+  Teams,
+  useDeleteProjectMutation,
+  useGetProjectQuery,
+  useGetProjectsTasksQuery,
+  useUpdateProjectTeamsMutation,
+} from "../../generated/graphql";
 import { Button } from "@material-ui/core";
-import { ProjectTeams } from "../../components/ProjectTeams";
+import { Task } from "../../components/Tasks/Task";
+import { useState } from "react";
+import { UserCircle } from "../../components/UI/UserCircle";
+import { CreateTask } from "../../components/Tasks/CreateTask";
+import { AddTeam } from "../../components/Team/AddTeam";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/navigation";
+import { ProjectTeams } from "../../components/Projects/ProjectTeams";
+import { CompletedTasks } from "../../components/Tasks/CompletedTasks";
 
 export default function TeamPage({ params }: any) {
   const { data: project } = useGetProjectQuery({
     variables: { id: parseInt(params.id) as number },
   });
 
+  const { data, refetch } = useGetProjectsTasksQuery({
+    variables: { id: parseInt(params.id) as number },
+  });
+
+  const [updateProject] = useUpdateProjectTeamsMutation();
+
+  const addTeamToProject = (team: Teams) => {
+    updateProject({
+      variables: {
+        id: parseInt(params.id),
+        teams: project?.getProject.teams + `${team.id}, `,
+      },
+      refetchQueries: [
+        {
+          query: GetProjectTeamsDocument,
+          variables: { id: parseInt(params.id) },
+        },
+      ],
+    });
+  };
+
+  const handleRefetch = async () => {
+    await refetch({ id: parseInt(params.id) });
+  };
+
+  const router = useRouter();
+  const [deleteProject] = useDeleteProjectMutation();
+
+  const handleDelete = () => {
+    deleteProject({
+      variables: { id: parseInt(params.id) },
+      refetchQueries: () => [{ query: GetUsersProjectsDocument }],
+    });
+    router.push("/projects");
+  };
+
+  const [open, setOpen] = useState(false);
+
   return project?.getProject ? (
     <div>
-      <Header title={project?.getProject.projectName as string}></Header>
-      <div className="h-[80.3vh]">
-        <section className="mt-5 ml-5 text-lg mx-auto">
-          <h2 className="text-blue-800 font-bold text-2xl">Team Lead</h2>
-
-          <div className=" border-[1px] border-orange-500 rounded-md mr-5 p-2 mt-3 shadow-lg">
-            <UserName id={project?.getProject.projectLead as number} />
+      <header className="header ml-0 relative">
+        <h1 className="title">{project.getProject.projectName}</h1>
+        <div className=" flex font-bold absolute left-3 top-[15px] text-2xl">
+          <div className="text-white"> Project Lead</div>{" "}
+          <div className="-mt-2 ml-5">
+            <UserCircle id={project?.getProject.projectLead as number} />
           </div>
+        </div>
+      </header>
+      <div className="min-h-[75vh]">
+        <section className="mt-5 text-lg mx-auto">
+          <div className="border-b-2 border-blue-600">
+            <h2 className="text-blue-800 font-bold ml-5 mt-5 text-4xl">
+              Teams
+            </h2>
+          </div>
+          {project.getProject && project.getProject.teams.length > 2 ? (
+            <ProjectTeams teams={project.getProject.teams} />
+          ) : (
+            <div className="m-5">
+              This project does not currently have any teams.
+            </div>
+          )}{" "}
+          <div className="ml-5 mt-5">
+            {" "}
+            {!open ? (
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={() => setOpen(true)}
+              >
+                Add Teams
+              </Button>
+            ) : (
+              <AddTeam addTeamToProject={addTeamToProject} />
+            )}
+          </div>{" "}
         </section>
-        <section className="mt-10 ml-5 text-lg mx-auto">
-          <h2 className="text-blue-800 font-bold text-2xl">Teams</h2>
-          <ProjectTeams teams={project.getProject.teams} />{" "}
+
+        <section className="mt-10 text-lg mx-auto">
+          <div className="border-b-2 border-blue-600">
+            {" "}
+            <h2 className="text-blue-800 ml-5 mt-5 font-bold text-4xl">
+              Recent Tasks
+            </h2>
+          </div>
+
+          <div className=" grid-cols-3 grid">
+            {data?.getProjectTasks && data.getProjectTasks.length > 0 ? (
+              data?.getProjectTasks.map(
+                (task) =>
+                  !task.isComplete && (
+                    <Task handleRefetch={handleRefetch} task={task} />
+                  )
+              )
+            ) : (
+              <div className="m-5">
+                This project does not currently have any tasks.
+              </div>
+            )}
+          </div>
+          <div className="ml-5">
+            <CreateTask
+              projectId={params.id as number}
+              handleRefetch={handleRefetch}
+            />
+          </div>
+          {data?.getProjectTasks && (
+            <CompletedTasks
+              tasks={data?.getProjectTasks as Tasks[]}
+              handleRefetch={handleRefetch}
+            />
+          )}
         </section>
-        <section className="mt-10 ml-5 text-lg mx-auto">
-          <h2 className="text-blue-800 font-bold text-2xl">Recent Tasks</h2>
-          <div className=" border-[1px] border-orange-500 rounded-md mr-5 p-2 mt-3 shadow-lg"></div>
-          <Link href="/tasks/create">
-            <Button
-              color="primary"
-              style={{ marginTop: "20px" }}
-              type="button"
-              variant="contained"
-            >
-              Create Task{" "}
-            </Button>
-          </Link>
-        </section>
-      </div>
+      </div>{" "}
+      <Button
+        onClick={() => handleDelete()}
+        variant="contained"
+        color="secondary"
+        style={{
+          width: "200px",
+          color: "white",
+          margin: "25px",
+        }}
+      >
+        <FontAwesomeIcon icon={faTrashAlt} className="mr-3" /> Delete Project
+      </Button>
     </div>
   ) : (
     <LoadingSVG />

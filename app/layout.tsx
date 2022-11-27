@@ -1,5 +1,5 @@
 "use client";
-import { Nav } from "./components/Nav";
+import { Nav } from "./components/UI/Nav";
 import {
   ApolloClient,
   ApolloProvider,
@@ -17,8 +17,8 @@ import "./globals.css";
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import store from "./store/store";
-import { Footer } from "./components/Footer";
-import { LoadingSVG } from "./components/LoadingSVG";
+import { Footer } from "./components/UI/Footer";
+import { LoadingSVG } from "./components/UI/LoadingSVG";
 
 export default function RootLayout({
   children,
@@ -35,7 +35,8 @@ export default function RootLayout({
         contrastText: "#fff",
       },
       secondary: {
-        main: "rgb(253 186 116);",
+        main: "rgb(239 68 68)",
+        dark: "rgb(153 27 27)",
       },
     },
   });
@@ -43,7 +44,7 @@ export default function RootLayout({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3001/refresh_token", {
+    fetch("http://localhost:4000/refresh_token", {
       method: "POST",
       credentials: "include",
     }).then(async (x) => {
@@ -126,7 +127,7 @@ export default function RootLayout({
         }),
         requestLink,
         new HttpLink({
-          uri: "http://localhost:3001/graphql",
+          uri: "http://localhost:4000/graphql",
           credentials: "include",
         }),
       ]),
@@ -134,15 +135,16 @@ export default function RootLayout({
     });
 
     return (
-      <html>
+      <html className="overflow-x-hidden">
         <ApolloProvider client={client}>
           <MuiThemeProvider theme={theme}>
             <Provider store={store}>
               <body>
                 <main>
                   <Nav />
-                  <div className="ml-[25%] lg:ml-[16.7%] h-[100vh]">
-                    {children} <Footer />
+                  <div className="ml-[25%] lg:ml-[16.7%] min-h-[100vh]">
+                    <div className="min-h-[89vh]"> {children} </div>
+                    <Footer />
                   </div>
                 </main>
               </body>

@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { useLogoutMutation, useGetUserQuery } from "../generated/graphql";
-import { RootState } from "../store/store";
-import { initialState, setUser, User } from "../slices/userSlice";
+import { useLogoutMutation, useGetUserQuery } from "../../generated/graphql";
+import { RootState } from "../../store/store";
+import { initialState, setUser, User } from "../../slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -56,12 +56,6 @@ export const Nav = () => {
       <div className="sidebar-icon">
         <Link className="z-10" href="/notifcations">
           <FontAwesomeIcon icon={faBell} className="h-6 mx-1" /> Notifications
-        </Link>
-      </div>
-      <div className="sidebar-icon">
-        <Link className="z-10" href="/search">
-          <FontAwesomeIcon icon={faSearch} className="h-6 mx-1 mr-2" />
-          Search
         </Link>
       </div>
       <div className="mt-auto">

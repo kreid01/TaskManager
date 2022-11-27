@@ -1,0 +1,5 @@
+mutation updateTask($isComplete: Boolean!, $id: Float!) {
+  updateTask(isComplete: $isComplete, id: $id) {
+    isComplete
+  }
+}

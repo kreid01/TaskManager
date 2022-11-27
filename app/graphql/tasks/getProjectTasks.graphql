@@ -1,0 +1,12 @@
+query getProjectsTasks($id: Float!) {
+  getProjectTasks(id: $id) {
+    taskName
+    id
+    creator
+    teamId
+    projectId
+    isComplete
+    created
+    completeDate
+  }
+}

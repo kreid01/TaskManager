@@ -1,0 +1,15 @@
+mutation createTask(
+  $projectId: Float!
+  $teamId: Float!
+  $completeDate: String!
+  $taskName: String!
+  $creator: Float!
+) {
+  createTask(
+    projectId: $projectId
+    teamId: $teamId
+    completeDate: $completeDate
+    taskName: $taskName
+    creator: $creator
+  )
+}
