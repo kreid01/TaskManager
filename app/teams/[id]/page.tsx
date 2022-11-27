@@ -2,11 +2,13 @@
 import { LoadingSVG } from "../../components/UI/LoadingSVG";
 import {
   GetUsersTeamsDocument,
+  Tasks,
   useDeleteTeamFromProjectsMutation,
   useDeleteTeamMutation,
   useDeleteTeamTasksMutation,
   useGetTeamProjectQuery,
   useGetTeamQuery,
+  useGetTeamTasksQuery,
 } from "../../generated/graphql";
 import Link from "next/link";
 import { Button } from "@material-ui/core";
@@ -16,6 +18,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import { UserCircle } from "../../components/UI/UserCircle";
 import { CreateProject } from "../../components/Projects/CreateProject";
+import { TeamTasks } from "../../components/Team/TeamTasks";
 
 export default function TeamPage({ params }: any) {
   const { data: team } = useGetTeamQuery({
@@ -26,7 +29,7 @@ export default function TeamPage({ params }: any) {
 
   const [deleteTeam] = useDeleteTeamMutation();
   const [deleteTeamFromProjects] = useDeleteTeamFromProjectsMutation();
-  const [deleteTeamTasks] = useDeleteTeamTasksMutation()
+  const [deleteTeamTasks] = useDeleteTeamTasksMutation();
 
   const handleDelete = () => {
     deleteTeam({
@@ -37,12 +40,16 @@ export default function TeamPage({ params }: any) {
       variables: { id: parseInt(params.id) as number },
     });
     router.push("/teams");
-    deleteTeamTasks({variables: {id: parseInt(params.id) as number}})
+    deleteTeamTasks({ variables: { id: parseInt(params.id) as number } });
   };
 
-  const { data } = useGetTeamProjectQuery({
+  const { data, refetch } = useGetTeamProjectQuery({
     variables: { id: parseInt(params.id) as number },
   });
+
+  const handleRefetch = async () => {
+    await refetch({ id: parseInt(params.id) as number });
+  };
 
   return team?.getTeam ? (
     <div>
@@ -55,7 +62,7 @@ export default function TeamPage({ params }: any) {
           </div>
         </div>
       </header>
-      <div className="h-[80.3vh]">
+      <div className="min-h-[80.3vh]">
         <section className="border-b-2 flex border-blue-600">
           {" "}
           <h2 className=" ml-5 mt-4 text-blue-800 font-bold text-4xl">
@@ -86,11 +93,8 @@ export default function TeamPage({ params }: any) {
             </div>
           )}
         </section>
-        <CreateProject />
-        <section className="mt-10 ml-5 text-lg mx-auto">
-          <h2 className="text-blue-800 font-bold text-2xl">Recent Tasks</h2>
-          <div className=" border-[1px] border-orange-500 rounded-md mr-5 p-2 mt-3 shadow-lg"></div>
-        </section>
+        <CreateProject handleRefetch={handleRefetch} />
+        <TeamTasks id={parseInt(params.id)} />
       </div>
 
       <Button

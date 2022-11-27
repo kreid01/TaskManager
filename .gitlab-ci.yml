@@ -1,0 +1,20 @@
+stages:
+    - build
+    - deploy
+
+build project:
+    stage: build
+    image: node
+    script:
+        - yarn install
+        - yarn build
+    artifacts:
+        paths:
+            - .next/
+
+netlify:
+    stage: deploy
+    image: node
+    script:
+        - npm install -g netlify-cli
+        - netlify deploy --dir=.next --prod

@@ -58,12 +58,6 @@ export const Nav = () => {
           <FontAwesomeIcon icon={faBell} className="h-6 mx-1" /> Notifications
         </Link>
       </div>
-      <div className="sidebar-icon">
-        <Link className="z-10" href="/search">
-          <FontAwesomeIcon icon={faSearch} className="h-6 mx-1 mr-2" />
-          Search
-        </Link>
-      </div>
       <div className="mt-auto">
         <div className="sidebar-icon border-t-[1px]">
           <Link className="z-10" href="/profile">

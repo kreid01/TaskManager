@@ -13,11 +13,15 @@ import {
   useCreateProjectMutation,
   useSearchTeamsQuery,
 } from "../../generated/graphql";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 
-export const CreateProject = () => {
+interface Props {
+  handleRefetch: () => void;
+}
+
+export const CreateProject: React.FC<Props> = ({ handleRefetch }) => {
   type CreateProject = {
     projectName: string;
     teams: string;
@@ -64,6 +68,7 @@ export const CreateProject = () => {
       refetchQueries: () => [{ query: GetTeamProjectDocument }],
     });
     setOpen(false);
+    handleRefetch();
   };
   const addTeamToProject = (team: Teams) => {
     setNewProject((prevState) => ({

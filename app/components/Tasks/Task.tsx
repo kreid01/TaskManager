@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProjectName } from "../Projects/ProjectName";
 import { TaskTeam } from "../Team/TaskTeam";
 import {
-  GetUsersTasksDocument,
   Tasks,
   useDeleteTaskMutation,
   useUpdateTaskMutation,
@@ -11,27 +10,28 @@ import {
 
 interface Props {
   task: Tasks;
+  handleRefetch: () => void;
 }
 
-export const Task: React.FC<Props> = ({ task }) => {
+export const Task: React.FC<Props> = ({ task, handleRefetch }) => {
   const [deleteTask] = useDeleteTaskMutation();
   const [updateTask] = useUpdateTaskMutation();
 
-  const handleDelete = () => {
-    deleteTask({
+  const handleDelete = async () => {
+    await deleteTask({
       variables: { id: task.id },
-
-      refetchQueries: () => [{ query: GetUsersTasksDocument }],
     });
+
+    handleRefetch();
   };
-  const handleUpdate = () => {
-    updateTask({
+  const handleUpdate = async () => {
+    await updateTask({
       variables: {
         id: task.id as number,
         isComplete: true,
       },
-      refetchQueries: () => [{ query: GetUsersTasksDocument }],
-    });
+    }),
+      handleRefetch();
   };
 
   return (
@@ -62,7 +62,11 @@ export const Task: React.FC<Props> = ({ task }) => {
         Project: <ProjectName id={task.projectId} />
       </h2>
       <h2>
-        <TaskTeam id={task.teamId} />
+        {task.teamId !== 0 ? (
+          <TaskTeam id={task.teamId} />
+        ) : (
+          <div>This Project has no teams assigned.</div>
+        )}
       </h2>
       <p className="text-white text-sm">
         Date to be completed: {task.completeDate}

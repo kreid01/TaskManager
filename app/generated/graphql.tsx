@@ -18,6 +18,7 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   bye: Scalars['String'];
+  getCompletedProjectTasks: Array<Tasks>;
   getProject: Projects;
   getProjects: Array<Projects>;
   getProjectTasks: Array<Tasks>;
@@ -36,6 +37,11 @@ export type Query = {
   searchUsers: Array<Users>;
   teams: Array<Teams>;
   users: Array<Users>;
+};
+
+
+export type QueryGetCompletedProjectTasksArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -103,15 +109,6 @@ export type QuerySearchUsersArgs = {
   search: Scalars['String'];
 };
 
-export type Projects = {
-  __typename?: 'Projects';
-  created: Scalars['String'];
-  id: Scalars['Int'];
-  projectLead: Scalars['Int'];
-  projectName: Scalars['String'];
-  teams: Scalars['String'];
-};
-
 export type Tasks = {
   __typename?: 'Tasks';
   completeDate: Scalars['String'];
@@ -122,6 +119,15 @@ export type Tasks = {
   projectId: Scalars['Int'];
   taskName: Scalars['String'];
   teamId: Scalars['Int'];
+};
+
+export type Projects = {
+  __typename?: 'Projects';
+  created: Scalars['String'];
+  id: Scalars['Int'];
+  projectLead: Scalars['Int'];
+  projectName: Scalars['String'];
+  teams: Scalars['String'];
 };
 
 export type Teams = {
@@ -348,7 +354,7 @@ export type GetTeamTasksQueryVariables = Exact<{
 }>;
 
 
-export type GetTeamTasksQuery = { __typename?: 'Query', getTeamTasks: Array<{ __typename?: 'Tasks', taskName: string, id: number, creator: number }> };
+export type GetTeamTasksQuery = { __typename?: 'Query', getTeamTasks: Array<{ __typename?: 'Tasks', taskName: string, id: number, projectId: number, isComplete: boolean, created: string, completeDate: string, teamId: number, creator: number }> };
 
 export type GetUsersTasksQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -858,6 +864,11 @@ export const GetTeamTasksDocument = gql`
   getTeamTasks(id: $getTeamTasksId) {
     taskName
     id
+    projectId
+    isComplete
+    created
+    completeDate
+    teamId
     creator
   }
 }

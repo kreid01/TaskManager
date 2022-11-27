@@ -13,31 +13,33 @@ export default function ProjectsPage() {
     variables: { id: currentUser?.id as number },
   });
 
- 
+const handleCreate = async () => {
+  await refetch({ id: currentUser?.id as number });
+};
 
-  return (
-    <div>
-      <Header title="Your Projects" />
-      <div className="grid grid-cols-2 my-5">
-        {teams?.getUsersProjects.map((project) => {
-          return (
-            <div>
-              <Project project={project} />
-            </div>
-          );
-        })}
-      </div>
-      <section>
-        <div>
-          {teams?.getUsersProjects && teams?.getUsersProjects.length === 0 && (
-            <div className="font-semibold ml-5 text-lg mb-10">
-              You are not a part of any projects, try creating one now.
-            </div>
-          )}
-        </div>
-
-        <CreateProject />
-      </section>
+return (
+  <div>
+    <Header title="Your Projects" />
+    <div className="grid grid-cols-2 my-5">
+      {teams?.getUsersProjects.map((project) => {
+        return (
+          <div>
+            <Project project={project} />
+          </div>
+        );
+      })}
     </div>
-  );
+    <section>
+      <div>
+        {teams?.getUsersProjects && teams?.getUsersProjects.length === 0 && (
+          <div className="font-semibold ml-5 text-lg mb-10">
+            You are not a part of any projects, try creating one now.
+          </div>
+        )}
+      </div>
+
+      <CreateProject handleRefetch={handleCreate} />
+    </section>
+  </div>
+);
 }

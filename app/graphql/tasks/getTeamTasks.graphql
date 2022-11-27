@@ -2,6 +2,11 @@ query getTeamTasks($getTeamTasksId: Float!) {
   getTeamTasks(id: $getTeamTasksId) {
     taskName
     id
+    projectId
+    isComplete
+    created
+    completeDate
+    teamId
     creator
   }
 }

@@ -26,7 +26,9 @@ export const Team: React.FC<Props> = ({ team }) => {
           </div>
         </header>
         <section>
-          <TeamMembers members={team?.members as string} />
+          {team?.members && team?.members.length > 3 && (
+            <TeamMembers members={team?.members as string} />
+          )}
         </section>
         <p className="text-white text-sm">Most recent task</p>
       </Link>

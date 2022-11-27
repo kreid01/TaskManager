@@ -3,6 +3,7 @@ import { LoadingSVG } from "../../components/UI/LoadingSVG";
 import {
   GetProjectTeamsDocument,
   GetUsersProjectsDocument,
+  Tasks,
   Teams,
   useDeleteProjectMutation,
   useGetProjectQuery,
@@ -14,18 +15,19 @@ import { Task } from "../../components/Tasks/Task";
 import { useState } from "react";
 import { UserCircle } from "../../components/UI/UserCircle";
 import { CreateTask } from "../../components/Tasks/CreateTask";
-import { AddTeam } from "./AddTeam";
+import { AddTeam } from "../../components/Team/AddTeam";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import { ProjectTeams } from "../../components/Projects/ProjectTeams";
+import { CompletedTasks } from "../../components/Tasks/CompletedTasks";
 
 export default function TeamPage({ params }: any) {
   const { data: project } = useGetProjectQuery({
     variables: { id: parseInt(params.id) as number },
   });
 
-  const { data } = useGetProjectsTasksQuery({
+  const { data, refetch } = useGetProjectsTasksQuery({
     variables: { id: parseInt(params.id) as number },
   });
 
@@ -44,6 +46,10 @@ export default function TeamPage({ params }: any) {
         },
       ],
     });
+  };
+
+  const handleRefetch = async () => {
+    await refetch({ id: parseInt(params.id) });
   };
 
   const router = useRouter();
@@ -70,7 +76,7 @@ export default function TeamPage({ params }: any) {
           </div>
         </div>
       </header>
-      <div>
+      <div className="min-h-[75vh]">
         <section className="mt-5 text-lg mx-auto">
           <div className="border-b-2 border-blue-600">
             <h2 className="text-blue-800 font-bold ml-5 mt-5 text-4xl">
@@ -110,7 +116,12 @@ export default function TeamPage({ params }: any) {
 
           <div className=" grid-cols-3 grid">
             {data?.getProjectTasks && data.getProjectTasks.length > 0 ? (
-              data?.getProjectTasks.map((task) => <Task task={task} />)
+              data?.getProjectTasks.map(
+                (task) =>
+                  !task.isComplete && (
+                    <Task handleRefetch={handleRefetch} task={task} />
+                  )
+              )
             ) : (
               <div className="m-5">
                 This project does not currently have any tasks.
@@ -118,15 +129,28 @@ export default function TeamPage({ params }: any) {
             )}
           </div>
           <div className="ml-5">
-            <CreateTask projectId={params.id as number} />
+            <CreateTask
+              projectId={params.id as number}
+              handleRefetch={handleRefetch}
+            />
           </div>
+          {data?.getProjectTasks && (
+            <CompletedTasks
+              tasks={data?.getProjectTasks as Tasks[]}
+              handleRefetch={handleRefetch}
+            />
+          )}
         </section>
       </div>{" "}
       <Button
         onClick={() => handleDelete()}
         variant="contained"
         color="secondary"
-        style={{ width: "200px", color: "white", margin: "25px" }}
+        style={{
+          width: "200px",
+          color: "white",
+          margin: "25px",
+        }}
       >
         <FontAwesomeIcon icon={faTrashAlt} className="mr-3" /> Delete Project
       </Button>

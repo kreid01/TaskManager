@@ -44,7 +44,7 @@ export default function RootLayout({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3001/refresh_token", {
+    fetch("http://localhost:4000/refresh_token", {
       method: "POST",
       credentials: "include",
     }).then(async (x) => {
@@ -127,7 +127,7 @@ export default function RootLayout({
         }),
         requestLink,
         new HttpLink({
-          uri: "http://localhost:3001/graphql",
+          uri: "http://localhost:4000/graphql",
           credentials: "include",
         }),
       ]),
@@ -135,7 +135,7 @@ export default function RootLayout({
     });
 
     return (
-      <html>
+      <html className="overflow-x-hidden">
         <ApolloProvider client={client}>
           <MuiThemeProvider theme={theme}>
             <Provider store={store}>

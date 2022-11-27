@@ -4,6 +4,7 @@ import Link from "next/link";
 import { UserName } from "../UI/UserName";
 import { ProjectTeams } from "./ProjectTeams";
 import { UserCircle } from "../UI/UserCircle";
+import { RecentTask } from "./RecentTask";
 
 interface Props {
   project?: Projects;
@@ -28,17 +29,13 @@ export const Project: React.FC<Props> = ({ project }) => {
             </div>{" "}
           </div>
         </header>
-        <div className="flex font-bold">
-          <h4 className="mr-2">Project Lead:</h4>{" "}
-          <span className="text-white">
-            {" "}
-            {project && <UserName id={project?.projectLead as number} />}
-          </span>
-        </div>
         <h2>
           <ProjectTeams teams={project?.teams as string} />
         </h2>
-        <p className=" text-sm">Most recent task</p>
+        <p className="flex my-2">
+          Most recent task:{" "}
+          {project && <RecentTask id={project?.id as number} />}
+        </p>
       </Link>
     </div>
   );

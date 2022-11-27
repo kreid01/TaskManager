@@ -14,13 +14,14 @@ import {
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { AddTeam } from "../../projects/[id]/AddTeam";
+import { AddTeam } from "../Team/AddTeam";
 
 interface Props {
   projectId: number;
+  handleRefetch: () => void;
 }
 
-export const CreateTask: React.FC<Props> = ({ projectId }) => {
+export const CreateTask: React.FC<Props> = ({ projectId, handleRefetch }) => {
   const currentUser = useSelector((state: RootState) => state.user.value);
   const [createTask] = useCreateTaskMutation();
   const initalState = {
@@ -46,9 +47,9 @@ export const CreateTask: React.FC<Props> = ({ projectId }) => {
     }));
   };
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     setOpen(false);
-    createTask({
+    await createTask({
       variables: {
         completeDate: newTask.completeDate,
         projectId: parseInt(projectId.toString()),
@@ -56,10 +57,8 @@ export const CreateTask: React.FC<Props> = ({ projectId }) => {
         creator: currentUser.id as number,
         teamId: newTeam.id,
       },
-      refetchQueries: [
-        { query: GetProjectsTasksDocument, variables: { id: projectId } },
-      ],
     });
+    handleRefetch();
   };
 
   const addTeamToProject = (team: Teams) => {

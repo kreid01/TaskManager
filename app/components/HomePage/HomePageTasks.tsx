@@ -10,7 +10,7 @@ export const HomePageTasks: React.FC<Props> = ({ id }) => {
     variables: { id: id as number },
   });
 
-  const refetchData = () => {
+  const handleRefetch = () => {
     refetch({ id: id });
   };
 
@@ -21,10 +21,12 @@ export const HomePageTasks: React.FC<Props> = ({ id }) => {
           Your Tasks
         </h2>
       </div>
-      <div className=" grid grid-cols-2">
+      <div className=" grid grid-cols-3">
         {tasks &&
           tasks.getUsersTasks.map((task) => {
-            return <Task task={task} />;
+            if (!task.isComplete) {
+              return <Task handleRefetch={handleRefetch} task={task} />;
+            }
           })}
       </div>
     </section>

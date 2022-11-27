@@ -19,7 +19,7 @@ export const HomePageTeams: React.FC<Props> = ({ id }) => {
         </h2>
       </div>
 
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-6">
         {teams?.getUsersTeams &&
           teams?.getUsersTeams.map((team) => {
             return <Team key={team.id} team={team} />;
