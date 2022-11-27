@@ -8,6 +8,9 @@ const nextConfig = {
 
 module.exports = nextConfig;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> b67ec1704a90921ebaa9b407abfcc791e85f117b
+=======
+>>>>>>> Tasks
