@@ -44,7 +44,7 @@ export default function RootLayout({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:4000/refresh_token", {
+    fetch("http://167.99.86.251:4001/refresh_token", {
       method: "POST",
       credentials: "include",
     }).then(async (x) => {
@@ -108,7 +108,7 @@ export default function RootLayout({
             }
           },
           fetchAccessToken: () => {
-            return fetch("http://localhost:3001/refresh_token", {
+            return fetch("http://167.99.86.251:4001/refresh_token", {
               method: "POST",
               credentials: "include",
             });
@@ -127,7 +127,7 @@ export default function RootLayout({
         }),
         requestLink,
         new HttpLink({
-          uri: "http://localhost:4000/graphql",
+          uri: "http://167.99.86.254:4001/graphql",
           credentials: "include",
         }),
       ]),
