@@ -6,15 +6,14 @@ import {
   DialogActions,
   Button,
 } from "@material-ui/core";
-import {
-  GetProjectsTasksDocument,
-  Teams,
-  useCreateTaskMutation,
-} from "../../generated/graphql";
+import { Teams, useCreateTaskMutation } from "../../generated/graphql";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { AddTeam } from "../Team/AddTeam";
+//@ts-ignore
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 interface Props {
   projectId: number;
@@ -51,7 +50,7 @@ export const CreateTask: React.FC<Props> = ({ projectId, handleRefetch }) => {
     setOpen(false);
     await createTask({
       variables: {
-        completeDate: newTask.completeDate,
+        completeDate: value.toString(),
         projectId: parseInt(projectId.toString()),
         taskName: newTask.taskName,
         creator: currentUser.id as number,
@@ -60,6 +59,8 @@ export const CreateTask: React.FC<Props> = ({ projectId, handleRefetch }) => {
     });
     handleRefetch();
   };
+
+  const [value, onChange] = useState(new Date());
 
   const addTeamToProject = (team: Teams) => {
     setNewTeam({ name: team.teamName, id: team.id });
@@ -99,23 +100,7 @@ export const CreateTask: React.FC<Props> = ({ projectId, handleRefetch }) => {
                   type="text"
                 />
               </FormControl>
-
-              <FormControl
-                style={{ margin: "20px 0", width: "50ch" }}
-                variant="outlined"
-              >
-                <InputLabel htmlFor="Completed Date">Complete Date</InputLabel>
-                <OutlinedInput
-                  style={{ width: "380px", height: "55px" }}
-                  id="completedDate"
-                  onChange={(e) => handleTeamChange(e)}
-                  label="Complete Date"
-                  margin="dense"
-                  value={newTask.completeDate}
-                  name="completeDate"
-                  type="text"
-                />
-              </FormControl>
+              <Calendar value={value} onChange={onChange} />
               <AddTeam addTeamToProject={addTeamToProject} />
             </div>
           </DialogContent>

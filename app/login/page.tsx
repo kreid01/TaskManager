@@ -72,7 +72,7 @@ export default function LoginPage({}) {
   };
 
   return (
-    <section className="pt-56">
+    <section className="pt-[5vh]">
       {" "}
       <div className="w-[480px] mx-auto p-6 rounded-md flex-col justify-center border-2 shadow lg">
         <header className="font-bold text-2xl my-3 text-orange-600 text-center">
