@@ -65,7 +65,7 @@ export default function RegistrationForm() {
       },
     });
     if (response) {
-      router.push("/");
+      router.push("/login");
     }
   };
 
@@ -81,8 +81,14 @@ export default function RegistrationForm() {
   return (
     <>
       <Header title="Creat An Account" />
-      <div className="md:ml-[60px] ml-5 w-[410px] h-[87vh]">
-        <form onSubmit={handleSubmit(onSubmit)}>
+      <div className=" h-[87vh]">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="pt-[5vh] h-full m-auto w-[520px] border-x-2 border-orange-500 px-10"
+        >
+          <div className="text-orange-500 text-lg font-bold  px-5">
+            Create an account and start meeting your deadlines!
+          </div>
           <DialogContent>
             <FormControl
               style={{ margin: "20px 0", width: "25ch" }}
@@ -240,7 +246,12 @@ export default function RegistrationForm() {
             </FormControl>
           </DialogContent>
           <DialogActions>
-            <Button color="primary" type="submit" variant="contained">
+            <Button
+              color="primary"
+              style={{ marginRight: "20px" }}
+              type="submit"
+              variant="contained"
+            >
               Register
             </Button>
           </DialogActions>

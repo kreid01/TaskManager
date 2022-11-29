@@ -30,7 +30,6 @@ export const Team: React.FC<Props> = ({ team }) => {
             <TeamMembers members={team?.members as string} />
           )}
         </section>
-        <p className="text-white text-sm">Most recent task</p>
       </Link>
     </div>
   );

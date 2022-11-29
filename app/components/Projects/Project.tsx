@@ -1,7 +1,6 @@
 "use client";
 import { Projects } from "../../generated/graphql";
 import Link from "next/link";
-import { UserName } from "../UI/UserName";
 import { ProjectTeams } from "./ProjectTeams";
 import { UserCircle } from "../UI/UserCircle";
 import { RecentTask } from "./RecentTask";

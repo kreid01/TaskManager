@@ -20,7 +20,9 @@ export const RecentTask: React.FC<Props> = ({ id }) => {
             return (
               <div className="flex justify-between font-semibold">
                 <p className="mx-2">{task.taskName}</p>
-                <p className="mx-2 ">Complete by: {task.completeDate}</p>
+                <p className="mx-2 ">
+                  Complete by: {task.completeDate.substring(0, 10)}
+                </p>
               </div>
             );
         })}

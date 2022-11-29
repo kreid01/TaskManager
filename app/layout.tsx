@@ -44,9 +44,12 @@ export default function RootLayout({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://167.99.86.251:4001/refresh_token", {
+    fetch("http://localhost:4000/refresh_token", {
       method: "POST",
       credentials: "include",
+      headers: {
+        "x-forwarded-proto": "https",
+      },
     }).then(async (x) => {
       const { accessToken } = await x.json();
       setAccessToken(accessToken);
@@ -108,7 +111,7 @@ export default function RootLayout({
             }
           },
           fetchAccessToken: () => {
-            return fetch("http://167.99.86.251:4001/refresh_token", {
+            return fetch("http://localhost:3001/refresh_token", {
               method: "POST",
               credentials: "include",
             });
@@ -127,7 +130,7 @@ export default function RootLayout({
         }),
         requestLink,
         new HttpLink({
-          uri: "http://167.99.86.254:4001/graphql",
+          uri: "http://localhost:4000/graphql",
           credentials: "include",
         }),
       ]),
@@ -143,7 +146,7 @@ export default function RootLayout({
                 <main>
                   <Nav />
                   <div className="ml-[25%] lg:ml-[16.7%] min-h-[100vh]">
-                    <div className="min-h-[89vh]"> {children} </div>
+                    <div className="min-h-[85vh]"> {children} </div>
                     <Footer />
                   </div>
                 </main>

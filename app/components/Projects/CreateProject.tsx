@@ -8,7 +8,6 @@ import {
   Button,
 } from "@material-ui/core";
 import {
-  GetTeamProjectDocument,
   Teams,
   useCreateProjectMutation,
   useSearchTeamsQuery,
@@ -65,7 +64,6 @@ export const CreateProject: React.FC<Props> = ({ handleRefetch }) => {
         projectLead: currentUser.id as number,
         teams: newProject.teams,
       },
-      refetchQueries: () => [{ query: GetTeamProjectDocument }],
     });
     setOpen(false);
     handleRefetch();
