@@ -10,15 +10,12 @@ interface Props {
 
 export const Team: React.FC<Props> = ({ team }) => {
   return (
-    <div className=" border-[1px] bg-orange-500 rounded-md p-2 mx-5 my-5 shadow-lg text-white">
+    <div className=" border-[1px]  rounded-md p-2 mx-5 my-5 shadow-lg text-slate-900">
       <Link href={`/teams/${team?.id}`}>
-        <header className="flex justify-between">
+        <header className="ml-2 flex justify-between">
           <div className="flex">
             {" "}
-            <h3 className="text-2xl font-bold text-white mt-1">
-              {" "}
-              {team?.teamName}
-            </h3>
+            <h3 className="text-2xl font-bold  mt-1"> {team?.teamName}</h3>
             <div className="ml-2">
               {" "}
               {team && <UserCircle id={team?.teamLead as number} />}{" "}

@@ -81,7 +81,7 @@ export const CreateTask: React.FC<Props> = ({ projectId, handleRefetch }) => {
           Create Task{" "}
         </Button>
       ) : (
-        <form className="border-[1px] shadow-lg border-orange-500 m-5 w-[440px] overflow-x-hidden rounded-md">
+        <form className="border-[1px] shadow-lg border-orange-500 my-5 w-[440px] overflow-x-hidden rounded-md">
           <DialogContent>
             <div className="grid overflow-x-hidden">
               <FormControl

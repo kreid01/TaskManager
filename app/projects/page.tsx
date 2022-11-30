@@ -13,6 +13,7 @@ export default function ProjectsPage() {
     variables: { id: currentUser?.id as number },
   });
 
+
 const handleCreate = async () => {
   await refetch({ id: currentUser?.id as number });
 };
@@ -24,7 +25,7 @@ return (
       {teams?.getUsersProjects.map((project) => {
         return (
           <div>
-            <Project project={project} />
+            <Project grid={3} project={project} />
           </div>
         );
       })}

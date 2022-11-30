@@ -18,7 +18,6 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   bye: Scalars['String'];
-  getCompletedProjectTasks: Array<Tasks>;
   getProject: Projects;
   getProjects: Array<Projects>;
   getProjectTasks: Array<Tasks>;
@@ -37,11 +36,6 @@ export type Query = {
   searchUsers: Array<Users>;
   teams: Array<Teams>;
   users: Array<Users>;
-};
-
-
-export type QueryGetCompletedProjectTasksArgs = {
-  id: Scalars['Float'];
 };
 
 
@@ -109,6 +103,15 @@ export type QuerySearchUsersArgs = {
   search: Scalars['String'];
 };
 
+export type Projects = {
+  __typename?: 'Projects';
+  created: Scalars['String'];
+  id: Scalars['Int'];
+  projectLead: Scalars['Int'];
+  projectName: Scalars['String'];
+  teams: Scalars['String'];
+};
+
 export type Tasks = {
   __typename?: 'Tasks';
   completeDate: Scalars['String'];
@@ -119,15 +122,6 @@ export type Tasks = {
   projectId: Scalars['Int'];
   taskName: Scalars['String'];
   teamId: Scalars['Int'];
-};
-
-export type Projects = {
-  __typename?: 'Projects';
-  created: Scalars['String'];
-  id: Scalars['Int'];
-  projectLead: Scalars['Int'];
-  projectName: Scalars['String'];
-  teams: Scalars['String'];
 };
 
 export type Teams = {

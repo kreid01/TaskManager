@@ -13,10 +13,10 @@ export const TaskTeam: React.FC<Props> = ({ id }) => {
   });
 
   return !loading ? (
-    <div className="border-[1px] rounded-md mr-5 p-1 mt-4 shadow-lg">
+    <div className="border-[1px] rounded-md mr-5 p-1 mt-1 shadow-lg">
       <Link href={`/teams/${id}`}>
         <section className="flex" key={id}>
-          <span className="font-semibold text-white text-lg mt-3 ml-3">
+          <span className="font-semibold test-slate-800 text-lg mt-3 ml-3">
             {data?.getTeam.teamName}
           </span>
           <TeamMembers members={data?.getTeam.members as string} />

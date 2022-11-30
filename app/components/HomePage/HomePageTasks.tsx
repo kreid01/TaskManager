@@ -1,3 +1,5 @@
+import { faTasksAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useGetUsersTasksQuery } from "../../generated/graphql";
 import { Task } from "../Tasks/Task";
 
@@ -16,9 +18,9 @@ export const HomePageTasks: React.FC<Props> = ({ id }) => {
 
   return (
     <section>
-      <div className="border-b-2 border-y-blue-600">
-        <h2 className="text-blue-800  mt-5 ml-5 font-bold text-4xl">
-          Your Tasks
+      <div className="border-b-2 border-y-slate-900">
+        <h2 className="title">
+          Your Tasks <FontAwesomeIcon icon={faTasksAlt} />
         </h2>
       </div>
       <div className=" grid grid-cols-3">

@@ -35,7 +35,7 @@ export const Task: React.FC<Props> = ({ task, handleRefetch }) => {
   };
 
   return (
-    <div className="text-white border-[1px] bg-orange-500 rounded-md p-2 m-5 shadow-lg">
+    <div className="text-slate-800 border-[1px rounded-md p-2 m-5 shadow-lg">
       <header className="flex justify-between">
         {" "}
         <h3 className="text-2xl font-bold">{task.taskName}</h3>
@@ -43,7 +43,7 @@ export const Task: React.FC<Props> = ({ task, handleRefetch }) => {
           {!task.isComplete && (
             <button
               onClick={() => handleUpdate()}
-              className="bg-green-500 mr-5 text-white rounded-md w-8 h-8 hover:bg-green-800"
+              className="bg-green-500 mr-2 text-white rounded-md w-8 h-8 hover:bg-green-800"
             >
               {" "}
               <FontAwesomeIcon icon={faCheckCircle} />{" "}
@@ -58,7 +58,7 @@ export const Task: React.FC<Props> = ({ task, handleRefetch }) => {
         </div>
       </header>
 
-      <h2 className="flex font-semibold text-2xl">
+      <h2 className="flex font-semibold -mb-2">
         Project: <ProjectName id={task.projectId} />
       </h2>
       <h2>
@@ -68,7 +68,7 @@ export const Task: React.FC<Props> = ({ task, handleRefetch }) => {
           <div>This Project has no teams assigned.</div>
         )}
       </h2>
-      <p className="text-white text-sm">
+      <p className="mt-2 text-sm">
         Date to be completed: {task.completeDate.substring(0, 10)}
       </p>
     </div>

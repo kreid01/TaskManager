@@ -1,5 +1,4 @@
 "use client";
-import { Header } from "./components/UI/Header";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
 import { HomePageTasks } from "./components/HomePage/HomePageTasks";
@@ -11,7 +10,6 @@ export default function HomePage() {
 
   return (
     <div>
-      <Header title="Home" />
       {currentUser && (
         <>
           <HomePageTasks id={currentUser.id as number} />

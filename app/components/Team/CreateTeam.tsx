@@ -8,7 +8,6 @@ import {
   Button,
 } from "@material-ui/core";
 import {
-  GetUsersTeamsDocument,
   useCreateTeamMutation,
   Users,
   useSearchUsersQuery,
@@ -17,7 +16,11 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 
-export const CreateTeam: React.FC = ({}) => {
+interface Props {
+  handleRefetch: () => void;
+}
+
+export const CreateTeam: React.FC<Props> = ({ handleRefetch }) => {
   type CreateTeam = {
     teamName: string;
     members: string;
@@ -26,12 +29,12 @@ export const CreateTeam: React.FC = ({}) => {
   const currentUser = useSelector((state: RootState) => state.user.value);
   const [createTeam] = useCreateTeamMutation();
 
-  const initalState = {
+  const initialState = {
     teamName: "",
     members: "",
   };
 
-  const [newTeam, setNewTeam] = useState<CreateTeam>(initalState);
+  const [newTeam, setNewTeam] = useState<CreateTeam>(initialState);
   const [newMembers, setNewMembers] = useState<String[]>([]);
 
   const [search, setSearch] = useState<string>();
@@ -46,9 +49,11 @@ export const CreateTeam: React.FC = ({}) => {
         teamLead: currentUser.id as number,
         members: newTeam.members,
       },
-      refetchQueries: () => [{ query: GetUsersTeamsDocument }],
     });
     setOpen(false);
+    setNewTeam(initialState);
+    setNewMembers([]);
+    handleRefetch();
   };
 
   const handleChange = (
@@ -117,7 +122,9 @@ export const CreateTeam: React.FC = ({}) => {
                 <div>
                   {" "}
                   {newMembers.map((member) => {
-                    return <div>{member}</div>;
+                    return (
+                      <div clasName="font-bold text-orange-500">{member}</div>
+                    );
                   })}
                 </div>
               </div>
@@ -157,7 +164,7 @@ export const CreateTeam: React.FC = ({}) => {
             <Button
               style={{
                 width: "380px",
-                margin: "50px 0",
+                margin: "10px 0",
                 marginRight: "auto",
                 marginLeft: "20px",
               }}

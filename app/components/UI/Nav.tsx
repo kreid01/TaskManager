@@ -29,7 +29,7 @@ export const Nav = () => {
 
   return (
     <nav
-      className="fixed min-h-screen w-3/12 lg:w-2/12 bg-gradient-to-r from-orange-600 to-amber-500
+      className="fixed min-h-screen w-3/12 lg:w-2/12 bg-gradient-to-r from-white to-gray-300
    flex flex-col  shadow-lg"
     >
       <div className="sidebar-icon">

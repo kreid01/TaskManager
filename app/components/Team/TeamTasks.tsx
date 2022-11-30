@@ -17,9 +17,13 @@ export const TeamTasks: React.FC<Props> = ({ id }) => {
   };
 
   return (
-    <section className="mt-10 ml-5 text-lg mx-auto">
-      <h2 className="text-blue-800 font-bold text-2xl">Recent Tasks</h2>
-      <div className="mt-3">
+    <section className="mt-10  text-lg mx-auto">
+      <div className="border-b-2 border-slate-800">
+        {" "}
+        <h2 className="title ml-2">Recent Tasks</h2>
+      </div>
+
+      <div className="mt-3 ml-5">
         {tasks?.getTeamTasks && tasks?.getTeamTasks.length > 5 ? (
           <div className="grid grid-cols-3">
             {tasks.getTeamTasks.map((task) => {
@@ -39,10 +43,10 @@ export const TeamTasks: React.FC<Props> = ({ id }) => {
         )}
       </div>
 
-      <div>
+      <div className="ml-5">
         <CreateTask projectId={id as number} handleRefetch={handleRefetch} />
       </div>
-      <div className="grid grid-cols-3 mt-5 -ml-5">
+      <div className="grid grid-cols-2 mt-5">
         {tasks?.getTeamTasks && (
           <CompletedTasks
             handleRefetch={handleRefetch}

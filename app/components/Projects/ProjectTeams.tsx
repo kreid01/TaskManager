@@ -4,26 +4,30 @@ import { TeamMembers } from "../Team/TeamMembers";
 
 interface Props {
   teams: string;
+  grid: number;
 }
 
-export const ProjectTeams: React.FC<Props> = ({ teams }) => {
+export const ProjectTeams: React.FC<Props> = ({ teams, grid }) => {
   const { data } = useGetProjectTeamsQuery({
     variables: { teams: teams.trim() as string },
   });
 
   return (
-    <div className="ml-5 border-[1px] bg-orange-500 rounded-md mr-5 p-1 mt-4 shadow-lg">
+    <div className={`ml-5 text-slate-800 grid grid-cols-${grid} mr-5 p-1 mt-4`}>
       {data?.getProjectTeams.map((team) => (
-        <section className="flex" key={team.id}>
+        <div
+          className="flex border-[1px] mr-4 mb-4 border-gray-300 rounded-md shadow-lg"
+          key={team.id}
+        >
           <Link href={`/teams/${team.id}`}>
             {" "}
-            <div className="font-semibold text-white text-lg ml-3 mt-4">
+            <div className="font-semibold text-lg ml-3 mt-4">
               {team.teamName}
             </div>
           </Link>
 
           <TeamMembers members={team.members} />
-        </section>
+        </div>
       ))}
     </div>
   );

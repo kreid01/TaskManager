@@ -9,7 +9,7 @@ export const ProjectName: React.FC<Props> = ({ id }) => {
   const { data } = useGetProjectQuery({ variables: { id: id } });
 
   return data?.getProject ? (
-    <div className=" ml-2">{data.getProject.projectName}</div>
+    <div className="text-slate-800 ml-2">{data.getProject.projectName}</div>
   ) : (
     <LoadingSVG />
   );

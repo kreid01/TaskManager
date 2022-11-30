@@ -1,5 +1,7 @@
 import { Project } from "../Projects/Project";
 import { useGetUsersProjectsQuery } from "../../generated/graphql";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faProjectDiagram } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   id: number;
@@ -16,15 +18,16 @@ export const HomePageProjects: React.FC<Props> = ({ id }) => {
 
   return (
     <section>
-      <div className="border-b-2 border-blue-600">
-        <h2 className="text-blue-800 mt-5 ml-5 font-bold text-4xl">
+      <div className="border-b-2 border-y-slate-900">
+        <h2 className="title">
           Current Projects
+          <FontAwesomeIcon className="ml-2" icon={faProjectDiagram} />
         </h2>
       </div>
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-3">
         {projects?.getUsersProjects &&
           projects.getUsersProjects.map((project) => {
-            return <Project key={project.id} project={project} />;
+            return <Project grid={2} key={project.id} project={project} />;
           })}
       </div>
     </section>
