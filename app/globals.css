@@ -7,38 +7,31 @@
 @layer components {
   .sidebar-icon {
     @apply relative flex 
-                py-4 w-[100%] pl-2 bg-gradient-to-r from-orange-600 to-amber-500 text-white
-                hover:text-orange-600 font-bold text-lg z-10 transition-all duration-700 border-b-[1px];
+                py-4 w-[100%] pl-2 bg-slate-800 text-white
+                hover:text-gray-200 font-bold text-lg z-10 transition-all duration-700 border-b-[1px];
               ;
   }
   .header {
-    @apply h-[61px] text-white bg-gradient-to-r from-blue-500 to-blue-600 grid justify-center
+    @apply text-slate-800 font-semibold bg-white grid border-b-2 h-[3vh] border-slate-800 justify-start
   }
   .title {
-    @apply font-bold text-2xl my-auto
+    @apply font-bold text-2xl  text-slate-800 my-auto -mb-1 ml-2
   }
     .tooltip {
-      @apply  w-auto p-2 m-2 min-w-max left-14 rounded-md shadow-md text-white bg-gray-900 text-xs font-bold transition-all duration-100 scale-0 origin-left
+      @apply  w-auto p-2 m-1 min-w-max rounded-md shadow-md text-white bg-gray-900 text-xs font-bold transition-all duration-100 scale-0 origin-left
     }
   .member {
-    @apply  relative rounded-full w-12 h-12 text-white text-center font-bold text-2xl mx-1
+    @apply  relative rounded-full w-10 h-10 text-white text-center font-semibold text-xl mx-1
   }
+  .profile-link {
+    @apply hover:bg-gray-50 px-4 py-5 font-bold text-gray-500 peer-checked:text-slate-800
+    peer-checked:border-b-4 peer-checked:border-b-orange-400;
+  }
+}
 
-  .sidebar-icon:before {
-    background: linear-gradient(to right, white, rgb(255 237 213), transparent);
-    content: "";
-    left: 0px;
-    z-index: 0;
-    top: 0px;
-    height: 100%;
-    width: 0%;
-    position:absolute;
-  } 
-
-  .sidebar-icon:hover:before {
-    transition: all 700ms ease;
-    width: 100%;
-  }}
+  .react-calendar {
+    min-width: 380px;
+  }
 
 .svg {
   display: inline-block;

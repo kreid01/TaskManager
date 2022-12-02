@@ -5,16 +5,16 @@ import { initialState, setUser, User } from "../../slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faHome,
-  faCalendar,
-  faProjectDiagram,
-  faPeopleGroup,
-  faBell,
-  faSearch,
-  faUserAlt,
   faArrowRightFromBracket,
+  faCircle,
+  faStar,
 } from "@fortawesome/free-solid-svg-icons";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Project, removeProject, setProjects } from "../../slices/projectSlice";
+import { NavProjects } from "./NavProjects";
+import { NavTasks } from "./NavTasks";
+import { LoadingSVG } from "./LoadingSVG";
+import { setTasks } from "../../slices/taskSlice";
 
 export const Nav = () => {
   const [logout, { client }] = useLogoutMutation();
@@ -27,74 +27,81 @@ export const Nav = () => {
     dispatch(setUser(user?.getUser as User));
   }, [user?.getUser]);
 
-  return (
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    try {
+      const savedProjects = localStorage.getItem("projects");
+      if (savedProjects != "undefined") {
+        const initialValue = JSON.parse(savedProjects as any);
+        dispatch(setProjects(initialValue));
+      }
+      const savedTasks = localStorage.getItem("tasks");
+      if (savedTasks != "undefined") {
+        const initialValue = JSON.parse(savedTasks as any);
+        dispatch(setTasks(initialValue));
+      }
+      setLoading(false);
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
+
+
+  return !loading ? (
     <nav
-      className="fixed min-h-screen w-3/12 lg:w-2/12 bg-gradient-to-r from-orange-600 to-amber-500
-   flex flex-col  shadow-lg"
+      className=" fixed hidden min-h-screen w-2/12 lg:w-[13%] bg-slate-800
+   lg:flex flex-col rleative  shadow-lg"
     >
-      <div className="sidebar-icon">
-        <Link className="z-10" href="/">
-          <FontAwesomeIcon icon={faHome} className="h-6 mx-1" /> Home
-        </Link>
-      </div>
-      <div className="sidebar-icon">
-        <Link className="z-10" href="/calender">
-          <FontAwesomeIcon icon={faCalendar} className="h-6 mx-1" /> Calender
-        </Link>
-      </div>
-      <div className="sidebar-icon">
-        <Link className="z-10" href="/projects">
-          <FontAwesomeIcon icon={faProjectDiagram} className="h-6 mx-1" />{" "}
-          Projects
-        </Link>
-      </div>
-      <div className="sidebar-icon">
-        <Link className="z-10" href="/teams">
-          <FontAwesomeIcon icon={faPeopleGroup} className="h-6 mx-1" /> Teams
-        </Link>
-      </div>
-      <div className="sidebar-icon">
-        <Link className="z-10" href="/notifcations">
-          <FontAwesomeIcon icon={faBell} className="h-6 mx-1" /> Notifications
-        </Link>
-      </div>
-      <div className="mt-auto">
-        <div className="sidebar-icon border-t-[1px]">
-          <Link className="z-10" href="/profile">
-            <FontAwesomeIcon icon={faUserAlt} className="h-6 mx-1 mr-2 " />
-            Profile
-          </Link>
+      <div>
+        <header className="text-white font-bold p-5 flex text-2xl bg-slate-600">
+          <img
+            className="h-10 w-10 mr-3 "
+            src="https://taskfzco.com/wp-content/uploads/2021/10/cropped-Task-mi-Fav-icon.png"
+            alt=""
+          />
+          Tasker
+        </header>
+        <div>
+          <NavTasks />
         </div>
-        {currentUser != undefined ? (
-          <button
-            className="sidebar-icon"
-            onClick={async () => {
-              logout();
-              dispatch(setUser(initialState.value));
-              await client!.resetStore();
-            }}
-          >
-            <FontAwesomeIcon
-              icon={faArrowRightFromBracket}
-              className="h-6 mx-1 mr-2 z-10"
-            />
-            <p className="z-10">Logout</p>
-          </button>
-        ) : (
-          <>
-            <div className="sidebar-icon border-t-[1px]">
-              <Link className="z-10" href="register">
-                Register
-              </Link>
-            </div>
-            <div className="sidebar-icon">
-              <Link className="z-10" href="login">
-                Login
-              </Link>
-            </div>
-          </>
-        )}
+        <NavProjects />
+        <div className="absolute bottom-0 w-full">
+          {currentUser != undefined ? (
+            <button
+              className="sidebar-icon"
+              onClick={async () => {
+                logout();
+                dispatch(setUser(initialState.value));
+                await client!.resetStore();
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faArrowRightFromBracket}
+                className="h-6 mx-1 mr-2 z-10"
+              />
+              <p className="z-10">Logout</p>
+            </button>
+          ) : (
+            <>
+              <div className="sidebar-icon ">
+                <Link className="z-10" href="register">
+                  Register
+                </Link>
+              </div>
+              <div className="sidebar-icon">
+                <Link className="z-10" href="login">
+                  Login
+                </Link>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </nav>
+  ) : (
+    <div>
+      <LoadingSVG></LoadingSVG>
+    </div>
   );
 };

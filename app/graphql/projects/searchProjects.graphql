@@ -1,0 +1,6 @@
+query searchProjects($search: String!) {
+  searchProjects(search: $search) {
+    projectName
+    id
+  }
+}

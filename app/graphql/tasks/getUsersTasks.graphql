@@ -3,9 +3,9 @@ query getUsersTasks($id: Float!) {
     taskName
     id
     creator
-    teamId
     projectId
     isComplete
+    members
     created
     completeDate
   }

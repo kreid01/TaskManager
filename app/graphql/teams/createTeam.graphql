@@ -1,3 +1,0 @@
-mutation createTeam($members: String!, $teamName: String!, $teamLead: Float!) {
-  createTeam(members: $members, teamName: $teamName, teamLead: $teamLead)
-}

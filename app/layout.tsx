@@ -17,7 +17,6 @@ import "./globals.css";
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import store from "./store/store";
-import { Footer } from "./components/UI/Footer";
 import { LoadingSVG } from "./components/UI/LoadingSVG";
 
 export default function RootLayout({
@@ -111,7 +110,7 @@ export default function RootLayout({
             }
           },
           fetchAccessToken: () => {
-            return fetch("http://localhost:3001/refresh_token", {
+            return fetch("http://localhost:4000/refresh_token", {
               method: "POST",
               credentials: "include",
             });
@@ -145,9 +144,8 @@ export default function RootLayout({
               <body>
                 <main>
                   <Nav />
-                  <div className="ml-[25%] lg:ml-[16.7%] min-h-[100vh]">
-                    <div className="min-h-[85vh]"> {children} </div>
-                    <Footer />
+                  <div className=" lg:ml-[13%] min-h-[100vh]">
+                    <div className="min-h-[97vh]"> {children} </div>
                   </div>
                 </main>
               </body>

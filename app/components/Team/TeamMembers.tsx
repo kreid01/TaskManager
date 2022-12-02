@@ -31,13 +31,13 @@ export const TeamMembers: React.FC<Props> = ({ members }) => {
                   : ""
               }
             >
-              <div className="pt-[5px] group relative">
+              <div className="pt-[5px] group relative nth">
                 {" "}
                 {member.firstName.charAt(0)}
                 {member.lastName.charAt(0)}
-                <span className=" w-auto p-2 m-2 absolute group-hover:scale-100 scale-0  min-w-max left-12 z-10 -top-1 rounded-md shadow-md text-white bg-gray-900 text-xs font-bold transition-all duration-100  origin-left">
+                <div className=" w-auto p-2 ml-2 absolute group-hover:scale-100 scale-0  min-w-max left-9 z-10 top-0 rounded-md shadow-md text-white bg-gray-900 text-xs font-bold transition-all duration-100  origin-left">
                   {member.firstName} {member.lastName}
-                </span>
+                </div>
               </div>
             </div>
           </div>

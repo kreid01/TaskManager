@@ -1,7 +1,0 @@
-query getTeam($id: Float!) {
-  getTeam(id: $id) {
-    teamName
-    teamLead
-    members
-  }
-}

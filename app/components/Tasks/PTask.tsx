@@ -1,6 +1,5 @@
 import { faCheckCircle, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ProjectName } from "../Projects/ProjectName";
 import { TaskTeam } from "../Team/TaskTeam";
 import {
   Tasks,
@@ -18,7 +17,7 @@ interface Props {
   handleRefetch: () => void;
 }
 
-export const Task: React.FC<Props> = ({ task, handleRefetch }) => {
+export const PTask: React.FC<Props> = ({ task, handleRefetch }) => {
   const [deleteTask] = useDeleteTaskMutation();
   const [updateTask] = useUpdateTaskMutation();
 
@@ -63,17 +62,17 @@ export const Task: React.FC<Props> = ({ task, handleRefetch }) => {
   };
 
   return (
-    <div className="border-[1px] my-[1px] relative rounded-md mx-1 md:mx-10 h-14 flex justify-between font-semibold">
-      <div className="ml-5 flex my-auto">
+    <div className="relative mx-1 md:mx-5 h-14  flex md:w-[60%] font-semibold">
+      <div className="ml-5 flex w-32 my-auto">
         <p>{task.taskName}</p>
       </div>
-      <div className="flex my-auto mr-10">
-        <p className="md:mx-10 w-24 my-auto">
+      <div className="flex my-auto mr-12">
+        <p className="mx-3 md:mx-10 w-20 my-auto">
           {task.completeDate.substring(0, 10)}
         </p>
-        <p className="md:mx-10 w-24 my-auto">
+        <p className="mx-3 md:mx-10 w-24 my-auto">
           {task.isComplete ? (
-            <div className="text-white bg-green-500 rounded-md pl-2">
+            <div className="text-white bg-green-500 rounded-md  pl-2">
               Completed
             </div>
           ) : (
@@ -82,19 +81,12 @@ export const Task: React.FC<Props> = ({ task, handleRefetch }) => {
             </div>
           )}
         </p>
-        <p className="md:mx-10 w-24 my-auto">
-          {task.projectId !== 0 ? (
-            <ProjectName id={task.projectId} />
-          ) : (
-            <div>No Project</div>
-          )}
-        </p>
-        <div className="hidden lg:block mx-10 w-32 my-auto">
+        <p className="hidden lg:block mx-10 w-28 my-auto">
           <TaskTeam members={task.members} />
-        </div>
+        </p>
         <FontAwesomeIcon
           onClick={handleClick}
-          className="mt-1 lg:mt-5"
+          className="mt-1 md:mt-5"
           icon={faSliders}
         />
         {open ? (

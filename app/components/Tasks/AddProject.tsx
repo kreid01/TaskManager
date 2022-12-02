@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { FormControl, OutlinedInput, InputLabel } from "@material-ui/core";
-import { Users, useSearchUsersQuery } from "../../generated/graphql";
+import { Projects, useSearchProjectsQuery } from "../../generated/graphql";
+import { TaskProject } from "./CreateTask";
 
 interface Props {
-  addUserToTeam: (user: Users) => void;
+  addProjectToTask: (project: TaskProject) => void;
 }
 
-export const AddTeam: React.FC<Props> = ({ addUserToTeam }) => {
+export const AddProject: React.FC<Props> = ({ addProjectToTask }) => {
   const [search, setSearch] = useState<string>();
-  const { data } = useSearchUsersQuery({
+  const { data } = useSearchProjectsQuery({
     variables: { search: search as string },
   });
 
@@ -19,13 +20,13 @@ export const AddTeam: React.FC<Props> = ({ addUserToTeam }) => {
   };
 
   return (
-    <div>
+    <div className="ml-6">
       <FormControl
         style={{ margin: "20px 0", width: "25ch" }}
         variant="outlined"
       >
         <InputLabel htmlFor="outlined-adornment-password">
-          Assign Members
+          Add Project
         </InputLabel>
         <OutlinedInput
           style={{ width: "380px", height: "55px" }}
@@ -38,14 +39,14 @@ export const AddTeam: React.FC<Props> = ({ addUserToTeam }) => {
         />
       </FormControl>
       {data &&
-        data.searchUsers.map((user) => {
+        data.searchProjects.map((project) => {
           return (
             <div
-              key={user.id}
+              key={project.id}
               className="border-b-[1px] border-gray-300 w-[380px] justify-between flex"
             >
-              <p>{user.firstName}</p>
-              <button type="button" onClick={() => addUserToTeam(user)}>
+              <p>{project.projectName}</p>
+              <button type="button" onClick={() => addProjectToTask(project)}>
                 +
               </button>
             </div>

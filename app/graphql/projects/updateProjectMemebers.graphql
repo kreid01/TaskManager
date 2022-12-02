@@ -1,0 +1,5 @@
+mutation updateProjectMembers($members: String!, $id: Float!) {
+  updateProjectMembers(members: $members, id: $id) {
+    members
+  }
+}
