@@ -1,6 +1,5 @@
 import { faCheckCircle, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ProjectName } from "../Projects/ProjectName";
 import { TaskTeam } from "../Team/TaskTeam";
 import {
   Tasks,
@@ -63,15 +62,15 @@ export const PTask: React.FC<Props> = ({ task, handleRefetch }) => {
   };
 
   return (
-    <div className="relative mx-5 h-14 flex w-[40%] font-semibold">
-      <div className="ml-5 flex w-12 my-auto">
+    <div className="relative mx-1 md:mx-5 h-14  flex md:w-[60%] font-semibold">
+      <div className="ml-5 flex w-32 my-auto">
         <p>{task.taskName}</p>
       </div>
       <div className="flex my-auto mr-12">
-        <p className="mx-10 w-20 my-auto">
+        <p className="mx-3 md:mx-10 w-20 my-auto">
           {task.completeDate.substring(0, 10)}
         </p>
-        <p className="mx-10 w-24 my-auto">
+        <p className="mx-3 md:mx-10 w-24 my-auto">
           {task.isComplete ? (
             <div className="text-white bg-green-500 rounded-md  pl-2">
               Completed
@@ -82,16 +81,16 @@ export const PTask: React.FC<Props> = ({ task, handleRefetch }) => {
             </div>
           )}
         </p>
-        <p className="mx-10 w-28 my-auto">
+        <p className="hidden lg:block mx-10 w-28 my-auto">
           <TaskTeam members={task.members} />
         </p>
         <FontAwesomeIcon
           onClick={handleClick}
-          className="mt-5"
+          className="mt-1 md:mt-5"
           icon={faSliders}
         />
         {open ? (
-          <div className="absolute right-16 wi28 h-10 flex justify-center bg-gray-50 shadow-lg rounded-md">
+          <div className="absolute right-16 w-28 h-10 flex justify-center bg-gray-50 shadow-lg rounded-md">
             <button
               className="h-6 my-auto w-6 mx-2 rounded-md text-white bg-red-500"
               onClick={handleDelete}

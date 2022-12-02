@@ -33,13 +33,13 @@ export const HomePageTasks: React.FC<Props> = ({ id, handleClick, open }) => {
         )}
         <div className={isOpenStyle}>
           <h2 className="title ml-5 mt-5">Task Board</h2>
-          <div className=" mx-10 flex justify-between font-semibold my-5">
+          <div className=" md:mx-10 flex justify-between font-semibold my-5">
             <p className="ml-5">Task</p>
             <div className="flex mr-10">
-              <p className="mx-10 w-24">End Date</p>
-              <p className="mx-10 w-24">Status</p>
-              <p className="mx-10 w-24">Project</p>
-              <p className="mx-10 w-32">Assignees</p>
+              <p className="md:mx-10 w-24">End Date</p>
+              <p className="md:mx-10 w-24">Status</p>
+              <p className="md:mx-10 w-24">Project</p>
+              <p className="hidden lg:block mx-10 w-32">Assignees</p>
 
               <FontAwesomeIcon className="mt-1" icon={faSliders} />
             </div>
@@ -47,7 +47,7 @@ export const HomePageTasks: React.FC<Props> = ({ id, handleClick, open }) => {
 
           <div
             onClick={() => handleClick()}
-            className="border-[1px] my-[1px] text-orange-500 cursor-pointer hover:shadow-lg border-orange-500 border-dashed rounded-md mx-10 h-14 flex font-semibold"
+            className="border-[1px] my-[1px] text-orange-500 cursor-pointer hover:shadow-lg border-orange-500 border-dashed rounded-md mx-1 md:mx-10 h-14 flex font-semibold"
           >
             <div className="ml-5 my-auto">
               <FontAwesomeIcon className="mr-3" icon={faPlus} />

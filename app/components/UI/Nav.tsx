@@ -46,10 +46,12 @@ export const Nav = () => {
     }
   }, []);
 
+
+
   return !loading ? (
     <nav
-      className=" fixed min-h-screen w-2/12 lg:w-[13%] bg-slate-800
-   flex flex-col rleative  shadow-lg"
+      className=" fixed hidden min-h-screen w-2/12 lg:w-[13%] bg-slate-800
+   lg:flex flex-col rleative  shadow-lg"
     >
       <div>
         <header className="text-white font-bold p-5 flex text-2xl bg-slate-600">
@@ -64,7 +66,7 @@ export const Nav = () => {
           <NavTasks />
         </div>
         <NavProjects />
-        <div className="absolute bottom-0 w-fulls">
+        <div className="absolute bottom-0 w-full">
           {currentUser != undefined ? (
             <button
               className="sidebar-icon"

@@ -80,8 +80,7 @@ export default function RegistrationForm() {
 
   return (
     <>
-      <Header title="Creat An Account" />
-      <div className=" h-[87vh]">
+      <div className=" h-[100vh]">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="pt-[5vh] h-full m-auto w-[520px] border-x-2 border-orange-500 px-10"

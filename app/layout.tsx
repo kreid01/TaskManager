@@ -144,7 +144,7 @@ export default function RootLayout({
               <body>
                 <main>
                   <Nav />
-                  <div className="ml-[25%] lg:ml-[13%] min-h-[100vh]">
+                  <div className=" lg:ml-[13%] min-h-[100vh]">
                     <div className="min-h-[97vh]"> {children} </div>
                   </div>
                 </main>

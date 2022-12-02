@@ -43,16 +43,16 @@ export const Project: React.FC<Props> = ({ project, handleRefetch }) => {
     dispatch(setProjects(filter));
   };
   return (
-    <div className="border-[1px] my-2 relative rounded-md mx-10 max-h-64">
-      <div className=" flex justify-between font-semibold border-b-[1px]">
+    <div className="border-[1px] my-2 relative rounded-md mx-1 md:mx-10 mb-10  max-h-96">
+      <div className=" flex justify-between py-5 md:py-0 font-semibold border-b-[1px]">
         <div className="ml-5 flex my-auto">
           <p>{project.projectName}</p>
         </div>
         <div className="flex my-auto mr-10">
-          <p className="mx-10 w-24 my-auto">
+          <p className="md:mx-10 w-24 my-auto">
             {project.completeDate.substring(0, 10)}
           </p>
-          <p className="mx-10 w-24 my-auto">
+          <p className="md:mx-10 w-24 mr-5 md:mr-0 my-auto">
             {project.isComplete ? (
               <div className="text-white bg-green-500 rounded-md">
                 Completed
@@ -63,12 +63,12 @@ export const Project: React.FC<Props> = ({ project, handleRefetch }) => {
               </div>
             )}
           </p>
-          <p className="mx-10 w-32 my-auto">
+          <p className="hidden lg:block mx-10 w-32 my-auto">
             <TaskTeam members={project.members} />
           </p>
           <FontAwesomeIcon
             onClick={handleClick}
-            className="mt-5"
+            className="mt-1 ml-3 lg:mt-5"
             icon={faSliders}
           />
           {open ? (

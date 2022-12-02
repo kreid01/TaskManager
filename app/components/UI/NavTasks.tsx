@@ -28,7 +28,7 @@ export const NavTasks: React.FC = ({}) => {
       {pinnedTasks &&
         pinnedTasks.map((task) => {
           return (
-            <div className="text-gray-300 py-2 mx-2 border-b-[1px] border-gray-50 hover:bg-slate-600 font-semibold text-lg">
+            <div className="text-gray-300 py-2 mx-2 border-b-[1px] border-gray-50  font-semibold text-lg">
               <header className="flex">
                 <h2>{task.taskName}</h2>
                 <button

@@ -102,7 +102,7 @@ export const CreateTask: React.FC<Props> = ({
 
   return (
     <div>
-      <form className="w-[480px] bg-white  p-6 z-30 left-[35%] top-[5%] absolute border-2 border-orange-500 rounded-md flex-col justify-center">
+      <form className="w-[480px] bg-white  p-6 z-30 left-[35%] top-[-10%] absolute border-2 border-orange-500 rounded-md flex-col justify-center">
         <DialogContent>
           <div className="grid overflow-x-hidden">
             <button

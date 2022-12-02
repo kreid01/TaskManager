@@ -13,12 +13,12 @@ export const ProjectTask: React.FC<Props> = ({ id }) => {
   };
   return data?.getProjectTasks && data.getProjectTasks.length > 0 ? (
     <div>
-      <div className="relative mx-5 h-14 flex w-[40%] font-semibold">
-        <div className="ml-5 flex my-auto">Name</div>
+      <div className="relative mx-5 h-14 flex lg:w-[60%] font-semibold">
+        <div className="mx-3 md:ml-5 w-32 flex my-auto">Name</div>
         <div className="flex my-auto mr-8">
-          <p className="mx-10 w-24 my-auto">End Date</p>
-          <p className="mx-10 w-24 my-auto">Status</p>
-          <p className="mx-10 w-28 my-auto">Assignees</p>
+          <p className="mx-3 md:mx-10 w-24 my-auto">End Date</p>
+          <p className="mx-3 md:mx-10 w-24 my-auto">Status</p>
+          <p className="hidden lg:block mx-10 w-28 my-auto">Assignees</p>
         </div>
       </div>
       {data &&
