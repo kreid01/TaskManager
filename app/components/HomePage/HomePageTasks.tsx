@@ -29,11 +29,7 @@ export const HomePageTasks: React.FC<Props> = ({ id, handleClick, open }) => {
     <section className="relative -mt-1">
       <div className="grid relative">
         {open && (
-          <CreateTask
-            handleClick={handleClick}
-            projectId={14}
-            handleRefetch={handleRefetch}
-          />
+          <CreateTask handleClick={handleClick} handleRefetch={handleRefetch} />
         )}
         <div className={isOpenStyle}>
           <h2 className="title ml-5 mt-5">Task Board</h2>
@@ -61,9 +57,9 @@ export const HomePageTasks: React.FC<Props> = ({ id, handleClick, open }) => {
           {tasks &&
             tasks?.getUsersTasks.length > 0 &&
             tasks.getUsersTasks.map((task) => {
-              if (!task.isComplete) {
-                return <Task handleRefetch={handleRefetch} task={task} />;
-              }
+              return (
+                <Task handleRefetch={handleRefetch} key={task.id} task={task} />
+              );
             })}
         </div>
       </div>

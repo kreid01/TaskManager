@@ -74,8 +74,10 @@ export type QuerySearchUsersArgs = {
 
 export type Projects = {
   __typename?: 'Projects';
+  completeDate: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['Int'];
+  isComplete: Scalars['Boolean'];
   members: Scalars['String'];
   projectLead: Scalars['Int'];
   projectName: Scalars['String'];
@@ -119,6 +121,7 @@ export type Mutation = {
 
 
 export type MutationCreateProjectArgs = {
+  completeDate: Scalars['String'];
   members: Scalars['String'];
   projectLead: Scalars['Float'];
   projectName: Scalars['String'];
@@ -189,6 +192,7 @@ export type LoginResponse = {
 export type CreateProjectMutationVariables = Exact<{
   members: Scalars['String'];
   projectName: Scalars['String'];
+  completeDate: Scalars['String'];
   projectLead: Scalars['Float'];
 }>;
 
@@ -207,14 +211,14 @@ export type GetProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'Query', getProject: { __typename?: 'Projects', projectName: string, projectLead: number, members: string } };
+export type GetProjectQuery = { __typename?: 'Query', getProject: { __typename?: 'Projects', projectName: string, projectLead: number, completeDate: string, isComplete: boolean, members: string } };
 
 export type GetUsersProjectsQueryVariables = Exact<{
   id: Scalars['Float'];
 }>;
 
 
-export type GetUsersProjectsQuery = { __typename?: 'Query', getUsersProjects: Array<{ __typename?: 'Projects', id: number, projectName: string, projectLead: number, created: string, members: string }> };
+export type GetUsersProjectsQuery = { __typename?: 'Query', getUsersProjects: Array<{ __typename?: 'Projects', id: number, projectName: string, projectLead: number, created: string, members: string, completeDate: string, isComplete: boolean }> };
 
 export type SearchProjectsQueryVariables = Exact<{
   search: Scalars['String'];
@@ -321,8 +325,8 @@ export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'Us
 
 
 export const CreateProjectDocument = gql`
-    mutation createProject($members: String!, $projectName: String!, $projectLead: Float!) {
-  createProject(members: $members, projectName: $projectName, projectLead: $projectLead)
+    mutation createProject($members: String!, $projectName: String!, $completeDate: String!, $projectLead: Float!) {
+  createProject(members: $members, completeDate: $completeDate, projectName: $projectName, projectLead: $projectLead)
 }
     `;
 export type CreateProjectMutationFn = Apollo.MutationFunction<CreateProjectMutation, CreateProjectMutationVariables>;
@@ -342,6 +346,7 @@ export type CreateProjectMutationFn = Apollo.MutationFunction<CreateProjectMutat
  *   variables: {
  *      members: // value for 'members'
  *      projectName: // value for 'projectName'
+ *      completeDate: // value for 'completeDate'
  *      projectLead: // value for 'projectLead'
  *   },
  * });
@@ -389,6 +394,8 @@ export const GetProjectDocument = gql`
   getProject(id: $id) {
     projectName
     projectLead
+    completeDate
+    isComplete
     members
   }
 }
@@ -429,6 +436,8 @@ export const GetUsersProjectsDocument = gql`
     projectLead
     created
     members
+    completeDate
+    isComplete
   }
 }
     `;

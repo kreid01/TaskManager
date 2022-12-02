@@ -2,6 +2,8 @@ query getProject($id: Float!) {
   getProject(id: $id) {
     projectName
     projectLead
+    completeDate
+    isComplete
     members
   }
 }

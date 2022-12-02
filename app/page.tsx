@@ -36,7 +36,11 @@ export default function HomePage() {
               id={currentUser.id as number}
             />
           ) : (
-            <HomePageProjects id={currentUser.id as number} />
+            <HomePageProjects
+              open={open}
+              handleClick={handleClick}
+              id={currentUser.id as number}
+            />
           )}
         </>
       )}

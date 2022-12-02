@@ -1,10 +1,12 @@
 mutation createProject(
   $members: String!
   $projectName: String!
+  $completeDate: String!
   $projectLead: Float!
 ) {
   createProject(
     members: $members
+    completeDate: $completeDate
     projectName: $projectName
     projectLead: $projectLead
   )

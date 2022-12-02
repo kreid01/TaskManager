@@ -5,5 +5,7 @@ query getUsersProjects($id: Float!) {
     projectLead
     created
     members
+    completeDate
+    isComplete
   }
 }

@@ -1,8 +1,8 @@
 import { faPlus, faSliders } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useGetUsersProjectsQuery } from "../../generated/graphql";
-import { CreateTask } from "../Tasks/CreateTask";
-import { Task } from "../Tasks/Task";
+import { CreateProject } from "../Projects/CreateProject";
+import { Project } from "../Projects/Project";
 
 interface Props {
   id: number;
@@ -10,7 +10,11 @@ interface Props {
   handleClick: () => void;
 }
 
-export const HomePageTasks: React.FC<Props> = ({ id, handleClick, open }) => {
+export const HomePageProjects: React.FC<Props> = ({
+  id,
+  handleClick,
+  open,
+}) => {
   const { data: tasks, refetch } = useGetUsersProjectsQuery({
     variables: { id: id as number },
   });
@@ -26,20 +30,18 @@ export const HomePageTasks: React.FC<Props> = ({ id, handleClick, open }) => {
     <section className="relative -mt-1">
       <div className="grid relative">
         {open && (
-          <CreateTask
+          <CreateProject
             handleClick={handleClick}
-            projectId={14}
             handleRefetch={handleRefetch}
           />
         )}
         <div className={isOpenStyle}>
-          <h2 className="title ml-5 mt-5">Task Board</h2>
+          <h2 className="title ml-5 mt-5">Project Board</h2>
           <div className=" mx-10 flex justify-between font-semibold my-5">
-            <p className="ml-5">Task</p>
+            <p className="ml-5">Project</p>
             <div className="flex mr-10">
               <p className="mx-10 w-24">End Date</p>
               <p className="mx-10 w-24">Status</p>
-              <p className="mx-10 w-24">Project</p>
               <p className="mx-10 w-32">Assignees</p>
 
               <FontAwesomeIcon className="mt-1" icon={faSliders} />
@@ -52,15 +54,19 @@ export const HomePageTasks: React.FC<Props> = ({ id, handleClick, open }) => {
           >
             <div className="ml-5 my-auto">
               <FontAwesomeIcon className="mr-3" icon={faPlus} />
-              Add New Task
+              Add New Project
             </div>
           </div>
           {tasks &&
             tasks?.getUsersProjects.length > 0 &&
             tasks.getUsersProjects.map((project) => {
-              if (!task.isComplete) {
-                return <Task handleRefetch={handleRefetch} task={task} />;
-              }
+              return (
+                <Project
+                  handleRefetch={handleRefetch}
+                  key={project.id}
+                  project={project}
+                />
+              );
             })}
         </div>
       </div>

@@ -4,8 +4,17 @@ import { RootState } from "../../store/store";
 import { initialState, setUser, User } from "../../slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { useEffect } from "react";
+import {
+  faArrowRightFromBracket,
+  faCircle,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import { Project, removeProject, setProjects } from "../../slices/projectSlice";
+import { NavProjects } from "./NavProjects";
+import { NavTasks } from "./NavTasks";
+import { LoadingSVG } from "./LoadingSVG";
+import { setTasks } from "../../slices/taskSlice";
 
 export const Nav = () => {
   const [logout, { client }] = useLogoutMutation();
@@ -18,7 +27,26 @@ export const Nav = () => {
     dispatch(setUser(user?.getUser as User));
   }, [user?.getUser]);
 
-  return (
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    try {
+      const savedProjects = localStorage.getItem("projects");
+      if (savedProjects != "undefined") {
+        const initialValue = JSON.parse(savedProjects as any);
+        dispatch(setProjects(initialValue));
+      }
+      const savedTasks = localStorage.getItem("tasks");
+      if (savedTasks != "undefined") {
+        const initialValue = JSON.parse(savedTasks as any);
+        dispatch(setTasks(initialValue));
+      }
+      setLoading(false);
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
+  return !loading ? (
     <nav
       className=" fixed min-h-screen w-2/12 lg:w-[13%] bg-slate-800
    flex flex-col rleative  shadow-lg"
@@ -33,16 +61,9 @@ export const Nav = () => {
           Tasker
         </header>
         <div>
-          <h1 className="text-gray-300 font-semibold text-lg ml-5 mt-5">
-            Pinned Tasks
-          </h1>
+          <NavTasks />
         </div>
-
-        <div>
-          <h1 className="text-gray-300 mt-[40vh] font-semibold text-lg ml-5">
-            Favourite Projects
-          </h1>
-        </div>
+        <NavProjects />
         <div className="absolute bottom-0 w-fulls">
           {currentUser != undefined ? (
             <button
@@ -76,5 +97,9 @@ export const Nav = () => {
         </div>
       </div>
     </nav>
+  ) : (
+    <div>
+      <LoadingSVG></LoadingSVG>
+    </div>
   );
 };

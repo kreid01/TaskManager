@@ -6,11 +6,7 @@ import {
   DialogActions,
   Button,
 } from "@material-ui/core";
-import {
-  Projects,
-  useCreateTaskMutation,
-  Users,
-} from "../../generated/graphql";
+import { useCreateTaskMutation, Users } from "../../generated/graphql";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
@@ -88,7 +84,7 @@ export const CreateTask: React.FC<Props> = ({
   const addProjectToTask = (project: TaskProject) => {
     setNewTask((prevState) => ({
       ...prevState,
-      [prevState.projectId]: project.id,
+      projectId: project.id,
     }));
     setProject(project.projectName);
   };
@@ -106,7 +102,7 @@ export const CreateTask: React.FC<Props> = ({
 
   return (
     <div>
-      <form className="w-[480px] bg-white  p-6 z-30 left-[35%] top-[15%] absolute border-2 border-orange-500 rounded-md flex-col justify-center">
+      <form className="w-[480px] bg-white  p-6 z-30 left-[35%] top-[5%] absolute border-2 border-orange-500 rounded-md flex-col justify-center">
         <DialogContent>
           <div className="grid overflow-x-hidden">
             <button
@@ -147,13 +143,15 @@ export const CreateTask: React.FC<Props> = ({
         {newTask.projectId === 0 ? (
           <AddProject addProjectToTask={addProjectToTask} />
         ) : (
-          <div>{project}</div>
+          <div className="font-bold mt-5 text-orange-500 ml-6">
+            Project: {project}
+          </div>
         )}
         <DialogActions>
           <Button
             style={{
               width: "380px",
-              margin: "20px 0",
+              margin: "10px 0",
               marginRight: "auto",
               marginLeft: "15px",
             }}
