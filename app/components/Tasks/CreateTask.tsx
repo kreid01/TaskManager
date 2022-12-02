@@ -6,7 +6,11 @@ import {
   DialogActions,
   Button,
 } from "@material-ui/core";
-import { Teams, useCreateTaskMutation } from "../../generated/graphql";
+import {
+  Projects,
+  useCreateTaskMutation,
+  Users,
+} from "../../generated/graphql";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
@@ -16,34 +20,45 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AddProject } from "./AddProject";
 
 interface Props {
-  projectId: number;
+  projectId?: number;
   handleRefetch: () => void;
   handleClick: () => void;
 }
+
+export type TaskProject = {
+  projectName: string;
+  id: number;
+};
 
 export const CreateTask: React.FC<Props> = ({
   projectId,
   handleRefetch,
   handleClick,
 }) => {
-  const currentUser = useSelector((state: RootState) => state.user.value);
-  const [createTask] = useCreateTaskMutation();
   const initalState = {
     taskName: "",
     completeDate: "",
+    members: "",
+    projectId: 0,
   };
+  const currentUser = useSelector((state: RootState) => state.user.value);
+  const [project, setProject] = useState<String>("");
+  const [newTask, setNewTask] = useState<NewTask>(initalState);
+  const [newMembers, setNewMembers] = useState<String[]>([]);
+  const [createTask] = useCreateTaskMutation();
+
+  const [value, onChange] = useState(new Date());
 
   type NewTask = {
     taskName: string;
     completeDate: string;
+    members: string;
+    projectId: number;
   };
-  const [newTask, setNewTask] = useState<NewTask>(initalState);
-  const [newTeam, setNewTeam] = useState({
-    name: "",
-    id: 0,
-  });
+
   const handleTeamChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -58,24 +73,40 @@ export const CreateTask: React.FC<Props> = ({
     await createTask({
       variables: {
         completeDate: value.toString(),
-        projectId: parseInt(projectId.toString()),
+        projectId:
+          projectId != undefined
+            ? parseInt(projectId.toString())
+            : newTask.projectId,
         taskName: newTask.taskName,
         creator: currentUser.id as number,
-        teamId: newTeam.id,
+        members: newTask.members,
       },
     });
     handleRefetch();
   };
 
-  const [value, onChange] = useState(new Date());
+  const addProjectToTask = (project: TaskProject) => {
+    setNewTask((prevState) => ({
+      ...prevState,
+      [prevState.projectId]: project.id,
+    }));
+    setProject(project.projectName);
+  };
 
-  const addTeamToProject = (team: Teams) => {
-    setNewTeam({ name: team.teamName, id: team.id });
+  const addUserToTeam = (user: Users) => {
+    setNewTask((prevState) => ({
+      ...prevState,
+      members: prevState.members + `${user.id}, `,
+    }));
+    setNewMembers((prevState) => [
+      ...prevState,
+      `${user.firstName} ${user.lastName}`,
+    ]);
   };
 
   return (
     <div>
-      <form className="w-[480px] bg-white  p-6 z-30 left-[25%] top-[20%] absolute border-2 border-orange-500 rounded-md flex-col justify-center">
+      <form className="w-[480px] bg-white  p-6 z-30 left-[35%] top-[15%] absolute border-2 border-orange-500 rounded-md flex-col justify-center">
         <DialogContent>
           <div className="grid overflow-x-hidden">
             <button
@@ -101,10 +132,23 @@ export const CreateTask: React.FC<Props> = ({
               />
             </FormControl>
             <Calendar value={value} onChange={onChange} />
-            <AddTeam addTeamToProject={addTeamToProject} />
+            <AddTeam addUserToTeam={addUserToTeam} />
           </div>
         </DialogContent>
-        <div className="font-bold text-orange-500 ml-6">{newTeam.name}</div>
+        <div className="font-bold text-orange-500 ml-6">
+          Current Members:
+          <div>
+            {" "}
+            {newMembers.map((members) => {
+              return <div>{members}</div>;
+            })}
+          </div>
+        </div>
+        {newTask.projectId === 0 ? (
+          <AddProject addProjectToTask={addProjectToTask} />
+        ) : (
+          <div>{project}</div>
+        )}
         <DialogActions>
           <Button
             style={{

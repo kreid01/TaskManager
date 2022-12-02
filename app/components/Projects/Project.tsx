@@ -1,11 +1,8 @@
 "use client";
 import { Projects } from "../../generated/graphql";
 import Link from "next/link";
-import { ProjectTeams } from "./ProjectTeams";
 import { UserCircle } from "../UI/UserCircle";
 import { RecentTask } from "./RecentTask";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faProjectDiagram } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   project?: Projects;
@@ -28,9 +25,7 @@ export const Project: React.FC<Props> = ({ project, grid }) => {
             </div>{" "}
           </div>
         </header>
-        <h2>
-          <ProjectTeams grid={grid} teams={project?.teams as string} />
-        </h2>
+        <h2></h2>
         {project && <RecentTask id={project?.id as number} />}
       </Link>
     </div>

@@ -8,9 +8,9 @@ import {
   Button,
 } from "@material-ui/core";
 import {
-  Teams,
   useCreateProjectMutation,
-  useSearchTeamsQuery,
+  Users,
+  useSearchUsersQuery,
 } from "../../generated/graphql";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
@@ -23,7 +23,7 @@ interface Props {
 export const CreateProject: React.FC<Props> = ({ handleRefetch }) => {
   type CreateProject = {
     projectName: string;
-    teams: string;
+    members: string;
   };
 
   const currentUser = useSelector((state: RootState) => state.user.value);
@@ -31,14 +31,14 @@ export const CreateProject: React.FC<Props> = ({ handleRefetch }) => {
 
   const initalState = {
     projectName: "",
-    teams: "",
+    members: "",
   };
 
   const [newProject, setNewProject] = useState<CreateProject>(initalState);
-  const [newTeams, setNewTeams] = useState<String[]>([]);
+  const [newMembers, setNewMembers] = useState<String[]>([]);
 
   const [search, setSearch] = useState<string>();
-  const { data } = useSearchTeamsQuery({
+  const { data } = useSearchUsersQuery({
     variables: { search: search as string },
   });
 
@@ -57,23 +57,28 @@ export const CreateProject: React.FC<Props> = ({ handleRefetch }) => {
       projectName: e.target.value,
     }));
   };
+
   const handleCreate = () => {
     createProject({
       variables: {
         projectName: newProject.projectName,
         projectLead: currentUser.id as number,
-        teams: newProject.teams,
+        members: newProject.members,
       },
     });
     setOpen(false);
     handleRefetch();
   };
-  const addTeamToProject = (team: Teams) => {
+
+  const addUserToProject = (user: Users) => {
     setNewProject((prevState) => ({
       ...prevState,
-      teams: prevState.teams + `${team.id}, `,
+      members: prevState.members + `${user.id}, `,
     }));
-    setNewTeams((prevState) => [...prevState, team.teamName]);
+    setNewMembers((prevState) => [
+      ...prevState,
+      `${(user.firstName, user.lastName)}`,
+    ]);
   };
 
   return (
@@ -113,8 +118,8 @@ export const CreateProject: React.FC<Props> = ({ handleRefetch }) => {
                 Current Teams:
                 <div>
                   {" "}
-                  {newTeams.map((teams) => {
-                    return <div>{teams}</div>;
+                  {newMembers.map((members) => {
+                    return <div>{members}</div>;
                   })}
                 </div>
               </div>
@@ -136,13 +141,15 @@ export const CreateProject: React.FC<Props> = ({ handleRefetch }) => {
                 />
               </FormControl>
               {data &&
-                data.searchTeams.map((team) => {
+                data.searchUsers.map((user) => {
                   return (
                     <div className="border-b-[1px] border-gray-300 w-[380px] justify-between flex">
-                      <p>{team.teamName}</p>
+                      <p>
+                        {user.firstName} {user.lastName}
+                      </p>
                       <button
                         type="button"
-                        onClick={() => addTeamToProject(team)}
+                        onClick={() => addUserToProject(user)}
                       >
                         +
                       </button>

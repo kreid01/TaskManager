@@ -1,10 +1,10 @@
 mutation createProject(
-  $teams: String!
+  $members: String!
   $projectName: String!
   $projectLead: Float!
 ) {
   createProject(
-    teams: $teams
+    members: $members
     projectName: $projectName
     projectLead: $projectLead
   )

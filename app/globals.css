@@ -7,7 +7,7 @@
 @layer components {
   .sidebar-icon {
     @apply relative flex 
-                py-4 w-[100%] pl-2 bg-gradient-to-r from-white to-gray-300 text-slate-800
+                py-4 w-[100%] pl-2 bg-slate-800 text-white
                 hover:text-gray-200 font-bold text-lg z-10 transition-all duration-700 border-b-[1px];
               ;
   }
@@ -24,29 +24,13 @@
     @apply  relative rounded-full w-10 h-10 text-white text-center font-semibold text-xl mx-1
   }
   .profile-link {
-    @apply hover:bg-gray-50 px-4 py-4 font-bold text-gray-500 peer-checked:text-slate-800 -mb-2
+    @apply hover:bg-gray-50 px-4 py-5 font-bold text-gray-500 peer-checked:text-slate-800
     peer-checked:border-b-4 peer-checked:border-b-orange-400;
   }
 }
 
   .react-calendar {
     min-width: 380px;
-  }
-
-  .sidebar-icon:before {
-    background: linear-gradient(to right, rgb(74, 74, 74), rgb(150, 150, 150), transparent);
-    content: "";
-    left: 0px;
-    z-index: 0;
-    top: 0px;
-    height: 100%;
-    width: 0%;
-    position:absolute;
-  } 
-
-  .sidebar-icon:hover:before {
-    transition: all 700ms ease;
-    width: 100%;
   }
 
 .svg {

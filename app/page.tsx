@@ -13,13 +13,28 @@ export default function HomePage() {
     setDisplayed(event.target.value);
   };
 
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen((prevState) => !prevState);
+    console.log(open);
+  };
+
   return (
     <div>
       {currentUser && (
         <>
-          <TopNav handleChange={handleChange} />
+          <TopNav
+            open={open}
+            id={currentUser.id as number}
+            handleChange={handleChange}
+          />
           {displayed === "tasks" ? (
-            <HomePageTasks id={currentUser.id as number} />
+            <HomePageTasks
+              open={open}
+              handleClick={handleClick}
+              id={currentUser.id as number}
+            />
           ) : (
             <HomePageProjects id={currentUser.id as number} />
           )}

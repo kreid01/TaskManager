@@ -1,5 +1,0 @@
-mutation updateTeam($members: String!, $updateTeamId: Float!) {
-  updateTeam(members: $members, id: $updateTeamId) {
-    members
-  }
-}
