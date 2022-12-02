@@ -75,7 +75,7 @@ export default function TeamPage({ params }: any) {
           {project.getProject.projectName}{" "}
           <FontAwesomeIcon icon={faProjectDiagram} />
         </h1>
-        <div className=" flex font-bold absolute right-3 top-[4vh] text-2xl">
+        <div className=" flex font-bold absolute right-3 top-[5vh] text-2xl">
           <div className="text-slate-800"> Project Lead</div>{" "}
           <div className="-mt-2 ml-5">
             <UserCircle id={project?.getProject.projectLead as number} />

@@ -145,7 +145,7 @@ export default function RootLayout({
               <body>
                 <main>
                   <Nav />
-                  <div className="ml-[25%] lg:ml-[16.7%] min-h-[100vh]">
+                  <div className="xl:ml-[25%] xl:ml-[16.7%] min-h-[100vh]">
                     <div className="min-h-[97vh]"> {children} </div>
                     <Footer />
                   </div>

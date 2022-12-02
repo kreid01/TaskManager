@@ -35,42 +35,36 @@ export const Task: React.FC<Props> = ({ task, handleRefetch }) => {
   };
 
   return (
-    <div className="text-slate-800 border-[1px rounded-md p-2 m-5 shadow-lg">
-      <header className="flex justify-between">
-        {" "}
-        <h3 className="text-2xl font-bold">{task.taskName}</h3>
-        <div>
-          {!task.isComplete && (
-            <button
-              onClick={() => handleUpdate()}
-              className="bg-green-500 mr-2 text-white rounded-md w-8 h-8 hover:bg-green-800"
-            >
-              {" "}
-              <FontAwesomeIcon icon={faCheckCircle} />{" "}
-            </button>
+    <div className="border-[1px] my-[1px] rounded-md mx-10 h-14 flex justify-between font-semibold">
+      <div className="ml-5 flex my-auto">
+        <p>{task.taskName}</p>
+        <button
+          className="h-6 w-6 rounded-md text-white bg-red-500"
+          onClick={handleDelete}
+        >
+          <FontAwesomeIcon icon={faTrashAlt} />
+        </button>
+      </div>
+      <div className="flex my-auto">
+        <p className="mx-10 w-24 my-auto">
+          {task.completeDate.substring(0, 10)}
+        </p>
+        <p className="mx-10 w-24 my-auto">
+          {task.isComplete ? (
+            <div className="text-white bg-green-500 rounded-md">Completed</div>
+          ) : (
+            <div className="text-white bg-orange-500 rounded-md w-24 pl-2">
+              In Progress
+            </div>
           )}
-          <button
-            className="bg-red-500 text-white rounded-md w-8 h-8 hover:bg-red-800"
-            onClick={() => handleDelete()}
-          >
-            <FontAwesomeIcon icon={faTrashAlt} />
-          </button>
-        </div>
-      </header>
-
-      <h2 className="flex font-semibold -mb-2">
-        Project: <ProjectName id={task.projectId} />
-      </h2>
-      <h2>
-        {task.teamId !== 0 ? (
+        </p>
+        <p className="mx-10 w-24 my-auto">
+          {task.id !== 0 ? <ProjectName id={task.projectId} /> : null}
+        </p>
+        <p className="mx-10 w-24 my-auto">
           <TaskTeam id={task.teamId} />
-        ) : (
-          <div>This Project has no teams assigned.</div>
-        )}
-      </h2>
-      <p className="mt-2 text-sm">
-        Date to be completed: {task.completeDate.substring(0, 10)}
-      </p>
+        </p>
+      </div>
     </div>
   );
 };

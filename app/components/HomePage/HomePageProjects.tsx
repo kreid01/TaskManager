@@ -24,7 +24,7 @@ export const HomePageProjects: React.FC<Props> = ({ id }) => {
           <FontAwesomeIcon className="ml-2" icon={faProjectDiagram} />
         </h2>
       </div>
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-2">
         {projects?.getUsersProjects &&
           projects.getUsersProjects.map((project) => {
             return <Project grid={2} key={project.id} project={project} />;

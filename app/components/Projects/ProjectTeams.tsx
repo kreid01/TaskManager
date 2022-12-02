@@ -13,7 +13,7 @@ export const ProjectTeams: React.FC<Props> = ({ teams, grid }) => {
   });
 
   return (
-    <div className={`ml-5 text-slate-800 grid grid-cols-${grid} mr-5 p-1 mt-4`}>
+    <div className={`ml-5 text-slate-800 grid grid-cols-2 mr-5 p-1 mt-4`}>
       {data?.getProjectTeams.map((team) => (
         <div
           className="flex border-[1px] mr-4 mb-4 border-gray-300 rounded-md shadow-lg"

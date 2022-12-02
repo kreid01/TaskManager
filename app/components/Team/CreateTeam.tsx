@@ -85,7 +85,7 @@ export const CreateTeam: React.FC<Props> = ({ handleRefetch }) => {
   };
 
   return (
-    <div>
+    <div className="absolute">
       {!open ? (
         <div className="m-5">
           <Button
@@ -98,7 +98,7 @@ export const CreateTeam: React.FC<Props> = ({ handleRefetch }) => {
           </Button>
         </div>
       ) : (
-        <form className="border-[1px] shadow-lg border-orange-500 m-5 w-[440px] rounded-md">
+        <form className="border-[1px] shadow-lg left-[50%] absolute border-orange-500 m-5 w-[440px] rounded-md">
           <DialogContent>
             <div className="grid  overflow-x-hidden r">
               <FormControl
@@ -123,7 +123,7 @@ export const CreateTeam: React.FC<Props> = ({ handleRefetch }) => {
                   {" "}
                   {newMembers.map((member) => {
                     return (
-                      <div clasName="font-bold text-orange-500">{member}</div>
+                      <div className="font-bold text-orange-500">{member}</div>
                     );
                   })}
                 </div>

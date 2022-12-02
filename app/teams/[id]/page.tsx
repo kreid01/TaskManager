@@ -63,7 +63,7 @@ export default function TeamPage({ params }: any) {
         <h1 className="title text-slate-800">
           {team?.getTeam.teamName} <FontAwesomeIcon icon={faPeopleGroup} />
         </h1>
-        <div className=" flex font-bold absolute right-3 top-[4vh] text-2xl">
+        <div className=" flex font-bold absolute right-3 top-[5vh] text-2xl">
           <div className="text-slate-800"> Team Lead</div>{" "}
           <div className="-mt-2 ml-5">
             <UserCircle id={team?.getTeam.teamLead as number} />
